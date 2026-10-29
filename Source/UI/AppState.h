@@ -134,7 +134,7 @@ private:
     std::set<juce::String> inFlight;
     std::map<juce::String, juce::String> failed;   // id -> error (not retried until the library changes)
     std::set<int> defaultsWanted;
-    juce::ThreadPool loader { juce::ThreadPoolOptions{}.withNumberOfThreads (2).withThreadName ("Instrument loader") };
+    juce::ThreadPool loader { juce::ThreadPoolOptions{}.withNumberOfThreads (2).withThreadName ("Instrument loader").withThreadStackSizeBytes (4 * 1024 * 1024) };
     std::shared_ptr<std::atomic<bool>> alive = std::make_shared<std::atomic<bool>> (true);
     juce::ListenerList<Listener> listeners;
     int tick = 0;

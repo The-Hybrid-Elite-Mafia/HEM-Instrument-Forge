@@ -33,7 +33,10 @@ int main (int argc, char* argv[])
         if (hf::models::find (id) == nullptr) { std::cerr << "unknown model instrument: " << id << "\n"; return 2; }
 
     const int jobs = juce::jlimit (1, 64, value ("--jobs").isNotEmpty() ? value ("--jobs").getIntValue() : juce::SystemStats::getNumCpus());
-    juce::ThreadPool pool (juce::ThreadPoolOptions{}.withNumberOfThreads (jobs));
+    // family folders first (the render threads only make their own instrument folder)
+    for (auto& m : hf::models::catalog())
+        out.getChildFile (hf::models::folderOf (m)).getParentDirectory().createDirectory();
+    juce::ThreadPool pool (juce::ThreadPoolOptions{}.withNumberOfThreads (jobs).withThreadStackSizeBytes (8 * 1024 * 1024));
     std::atomic<int> failed { 0 };
     juce::CriticalSection printLock;   // tool only (not audio): keeps lines whole
     juce::StringArray report;

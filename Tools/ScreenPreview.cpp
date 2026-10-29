@@ -43,10 +43,12 @@ int main (int argc, char** argv)
     settings.setValue ("band.genre", 1);
     settings.setValue ("band.length", 2);   // short song
 
-    ForgeEngine engine;
+    auto enginePtr = std::make_unique<ForgeEngine>();   // heap: large fixed arrays inside
+    auto& engine = *enginePtr;
     engine.prepareToPlay (48000.0, 512);
     {
-        ui::MainComponent mc (engine, nullptr, settings);
+        auto mcPtr = std::make_unique<ui::MainComponent> (engine, nullptr, settings);
+        auto& mc = *mcPtr;
         auto& st = mc.getState();
         mc.setSize (1600, 900);
         pump (300);

@@ -254,7 +254,13 @@ RenderResult renderInstrument (const ModelInstrument& m, const juce::File& libra
     if (! render) { res.message = m.id + ": unknown model " + m.model; return res; }
     const auto dir = libraryRoot.getChildFile (folderOf (m));
     dir.deleteRecursively();
-    dir.createDirectory();   // parallel renders may race to make the family folder; check the result instead
+    // parallel renders may race to make the same family folder: retry a few times
+    for (int attempt = 0; attempt < 20 && ! dir.isDirectory(); ++attempt)
+    {
+        dir.getParentDirectory().createDirectory();
+        dir.createDirectory();
+        if (! dir.isDirectory()) juce::Thread::sleep (25);
+    }
     if (! dir.isDirectory()) { res.message = m.id + ": cannot create " + dir.getFullPathName(); return res; }
 
     const bool drums = m.kind == "drums";

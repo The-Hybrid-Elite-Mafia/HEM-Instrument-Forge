@@ -79,7 +79,11 @@ jobs:
 
       - name: Render the modeled instruments
         shell: cmd
-        run: build\ModelRender_artefacts\Release\ModelRender.exe --out %WORK%\models --jobs 4
+        run: |
+          build\ModelRender_artefacts\Release\ModelRender.exe --out %WORK%\models --jobs 4 > models.txt 2>&1
+          set RC=%ERRORLEVEL%
+          type models.txt
+          exit /b %RC%
 
       - name: Build the HEM Instrument Library
         shell: bash
@@ -87,7 +91,8 @@ jobs:
           set -e
           python -m pip install --quiet numpy scipy soundfile
           W=$(cygpath -w "$WORK")
-          python -I Tools/build_library.py --vcsl "$W\\vcsl" --vsco "$W\\vsco" --vd "$W\\vd" --models "$W\\models" --out "$W\\library" --jobs 4
+          python -I Tools/build_library.py --vcsl "$W\\vcsl" --vsco "$W\\vsco" --vd "$W\\vd" --models "$W\\models" --out "$W\\library" --jobs 4 2>&1 | tee library.txt
+          test "${PIPESTATUS[0]}" = 0
           grep -c "FAILED" "$(cygpath -u "$WORK")/library/BUILD-REPORT.txt" && exit 1 || true
           du -sh "$(cygpath -u "$WORK")/library"
 
@@ -151,3 +156,27 @@ jobs:
             --target "${{ github.sha }}" \
             --title "HEM Instrument Forge $VER (Windows PC)" \
             --notes "Windows installer built in the cloud from commit ${{ github.sha }}. Library: $LIB. $TESTS. $PREVIEW. Download EVERY file of this release into the same folder (the .exe and its .bin parts), then run the .exe. Not code-signed: if Windows SmartScreen says 'Windows protected your PC', click More info, then Run anyway."
+
+      - name: Save the logs where Claude can read them (branch ci-logs)
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          D="logs/run-${{ github.run_id }}"
+          mkdir -p "/tmp/$D"
+          for f in tests.txt models.txt library.txt preview.txt; do [ -f "$f" ] && cp "$f" "/tmp/$D/"; done
+          L="$(cygpath -u "$WORK")/library"
+          [ -f "$L/BUILD-REPORT.txt" ] && cp "$L/BUILD-REPORT.txt" "/tmp/$D/"
+          [ -f "$(cygpath -u "$WORK")/models/MODEL-REPORT.txt" ] && cp "$(cygpath -u "$WORK")/models/MODEL-REPORT.txt" "/tmp/$D/"
+          echo "status: ${{ job.status }}" > "/tmp/$D/STATUS.txt"
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          rm -rf /tmp/ci-logs
+          git clone -q --depth 1 --branch ci-logs "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/ci-logs 2>/dev/null \
+            || { git init -q /tmp/ci-logs && git -C /tmp/ci-logs checkout -q -b ci-logs && git -C /tmp/ci-logs remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"; }
+          mkdir -p "/tmp/ci-logs/$D"
+          cp -r "/tmp/$D/." "/tmp/ci-logs/$D/"
+          git -C /tmp/ci-logs add -A
+          git -C /tmp/ci-logs commit -q -m "CI logs for run ${{ github.run_id }} [skip ci]"
+          git -C /tmp/ci-logs push -q origin ci-logs
+          exit 0

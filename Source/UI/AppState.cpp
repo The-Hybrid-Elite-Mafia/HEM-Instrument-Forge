@@ -39,7 +39,7 @@ class AppState::BalanceJob final : public juce::Thread
 {
 public:
     BalanceJob (AppState& s, Song sg, juce::ValueTree p, exporter::Instruments i)
-        : juce::Thread ("HEM balance"), state (s), song (std::move (sg)), params (std::move (p)), insts (std::move (i)) {}
+        : juce::Thread ("HEM balance", 8 * 1024 * 1024), state (s), song (std::move (sg)), params (std::move (p)), insts (std::move (i)) {}
     ~BalanceJob() override { cancel.store (true); stopThread (30000); }
 
     void run() override

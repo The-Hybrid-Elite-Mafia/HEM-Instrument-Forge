@@ -9,7 +9,9 @@ namespace exporter
 bool render (const Song& song, const juce::ValueTree& parameters, const Instruments& insts, double sr, double tail,
              int soloTrack, juce::AudioBuffer<float>& out, const std::atomic<bool>* cancel, const std::function<void (float)>& progress)
 {
-    ForgeEngine e (true);
+    // on the heap: the engine holds large fixed arrays (a worker thread's stack may be only 1 MB)
+    auto engine = std::make_unique<ForgeEngine> (true);
+    auto& e = *engine;
     if (parameters.isValid() && parameters.hasType (e.getAPVTS().state.getType()))
         e.getAPVTS().replaceState (parameters.createCopy());
     for (int t = 0; t < kMaxTracks; ++t)

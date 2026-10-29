@@ -6,7 +6,7 @@ class ExportPanel::Job final : public juce::Thread
 {
 public:
     Job (ExportPanel& p, Song s, juce::ValueTree params, exporter::Instruments insts, ExportOptions o)
-        : juce::Thread ("HEM export"), panel (p), song (std::move (s)), parameters (std::move (params)), instruments (std::move (insts)), options (std::move (o)) {}
+        : juce::Thread ("HEM export", 8 * 1024 * 1024), panel (p), song (std::move (s)), parameters (std::move (params)), instruments (std::move (insts)), options (std::move (o)) {}
     ~Job() override { cancelFlag.store (true); stopThread (60000); }
 
     void run() override
