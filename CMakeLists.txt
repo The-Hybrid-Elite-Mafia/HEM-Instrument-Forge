@@ -110,6 +110,7 @@ if(HF_BUILD_TOOLS)
     target_link_libraries(ModelRender PRIVATE ${HF_JUCE_MODULES} PUBLIC juce::juce_recommended_config_flags)
 
     # ScreenPreview: renders every page to PNG without a display (checks the layout headless)
+  if(HF_BUILD_APP)
     juce_add_console_app(ScreenPreview PRODUCT_NAME "ScreenPreview")
     target_sources(ScreenPreview PRIVATE ${HF_CORE_SOURCES} ${HF_UI_SOURCES} Tools/ScreenPreview.cpp)
     target_include_directories(ScreenPreview PRIVATE Source)
@@ -117,11 +118,12 @@ if(HF_BUILD_TOOLS)
     list(FILTER HF_PREVIEW_DEFS EXCLUDE REGEX "JUCE_MODAL_LOOPS_PERMITTED")
     target_compile_definitions(ScreenPreview PRIVATE ${HF_PREVIEW_DEFS} JUCE_MODAL_LOOPS_PERMITTED=1 HEM_VERSION_STRING="${PROJECT_VERSION}")
     target_link_libraries(ScreenPreview PRIVATE ForgeAssets ${HF_JUCE_MODULES} PUBLIC juce::juce_recommended_config_flags)
+  endif()
 endif()
 
 if(HF_BUILD_TESTS)
     juce_add_console_app(ForgeTests PRODUCT_NAME "ForgeTests")
-    target_sources(ForgeTests PRIVATE ${HF_CORE_SOURCES}
+    target_sources(ForgeTests PRIVATE ${HF_CORE_SOURCES} ${HF_MODEL_SOURCES}
         Tests/TestMain.cpp
         Tests/TestLibrary.cpp
         Tests/LibraryTests.cpp
@@ -130,7 +132,8 @@ if(HF_BUILD_TESTS)
         Tests/EngineTests.cpp
         Tests/SessionTests.cpp
         Tests/BandTests.cpp
-        Tests/ExportTests.cpp)
+        Tests/ExportTests.cpp
+        Tests/ModelTests.cpp)
     target_include_directories(ForgeTests PRIVATE Source Tests)
     target_compile_definitions(ForgeTests PRIVATE ${HF_COMMON_DEFS} JUCE_UNIT_TESTS=1)
     target_link_libraries(ForgeTests

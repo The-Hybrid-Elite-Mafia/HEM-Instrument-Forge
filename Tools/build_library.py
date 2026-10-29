@@ -292,6 +292,13 @@ VSCO_CATALOG = [
       sustain=('Sustain', 'Vibrato'), release=0.2),
 ]
 
+# String ensemble: the three VSCO sections played as one instrument, split across the keyboard
+# (cello below F#3, viola F#3..E4, violins from F4 up).
+ENSEMBLE = S('string-ensemble', 'String Ensemble', 'Strings',
+             [('Sustain', 'susVib'), ('Spiccato', 'Spic'), ('Pizzicato', 'Pizz'), ('Tremolo', 'Trem')],
+             sustain=('Sustain', 'Tremolo'), mono=False, release=0.35)
+ENSEMBLE_SPLITS = [('cello-section', 0, 53), ('viola-section', 54, 64), ('violin-section', 65, 127)]
+
 # Drum kits on General MIDI notes. Pieces: GM note -> (source, spec, key in that SFZ or VD piece)
 ORCH_KIT = {
     36: ('Bass Drum 1.sfz', 60), 38: ('Snare Drum, Modern 1.sfz', 60), 40: ('Snare Drum, Modern 1.sfz', 61),
@@ -767,6 +774,45 @@ def finish_instrument(spec, arts, b, source):
     return f"{spec['id']}: {len(arts)} articulation(s), {nz} zones, {b.count} files, range {lo}..{hi}, gain {gain:+.1f} dB"
 
 
+def build_ensemble(b, vsco_root, spec):
+    sections = {x['id']: x for x in VSCO_CATALOG}
+    arts = []
+    for art_name, _ in spec['arts']:
+        zones = []
+        for sid, lo, hi in ENSEMBLE_SPLITS:
+            sec = sections[sid]
+            folder = dict(sec['arts']).get(art_name)
+            if folder is None:
+                raise RuntimeError(f"{sid} has no {art_name}")
+            a = build_vsco_articulation(b, vsco_root, art_name, folder, dict(sec, sustain=spec['sustain']))
+            for z in a['zones']:
+                zlo, zhi = max(z['lo'], lo), min(z['hi'], hi)
+                if zlo > zhi:
+                    continue
+                z['lo'], z['hi'] = zlo, zhi
+                zones.append(z)
+        # the outer section zones were kept within a fifth of their last note; stretch the
+        # zones next to a split so no key between sections is left silent
+        covered = sorted({k for z in zones for k in range(z['lo'], z['hi'] + 1)})
+        for k in range(covered[0], covered[-1] + 1):
+            if k not in covered:
+                near = min(zones, key=lambda z: min(abs(z['lo'] - k), abs(z['hi'] - k)))
+                for z in zones:
+                    if z['root'] == near['root']:
+                        z['lo'], z['hi'] = min(z['lo'], k), max(z['hi'], k)
+                covered = sorted({q for z in zones for q in range(z['lo'], z['hi'] + 1)})
+        rel = spec['release'] if art_name not in ('Spiccato', 'Pizzicato') else 0.15
+        arts.append({"name": art_name, "release": rel, "loop": art_name in spec['sustain'], "zones": zones})
+        log(f"{spec['id']}/{art_name}: {len(zones)} zones from the three sections")
+    # samples outside every section's split were written but are not played: remove them
+    used = {z['file'] for a in arts for z in a['zones']}
+    for rec in list(b.files.values()):
+        if rec['file'] not in used:
+            os.remove(os.path.join(b.dir, rec['file']))
+    b.count = len(used)
+    return finish_instrument(spec, arts, b, 'vsco')
+
+
 def build_one(job):
     kind, spec, roots, out = job
     report.clear()
@@ -778,6 +824,8 @@ def build_one(job):
         elif kind == 'vsco':
             arts = [build_vsco_articulation(b, roots['vsco'], n, p, spec) for n, p in spec['arts']]
             msg = finish_instrument(spec, arts, b, 'vsco')
+        elif kind == 'ensemble':
+            msg = build_ensemble(b, roots['vsco'], spec)
         elif kind == 'kit-orch':
             msg = build_orch_kit(b, roots['vcsl'], spec)
         elif kind == 'kit-vd':
@@ -967,7 +1015,7 @@ def main():
     ap.add_argument('--list', action='store_true')
     a = ap.parse_args()
     if a.list:
-        for s in CATALOG + VSCO_CATALOG:
+        for s in CATALOG + VSCO_CATALOG + [ENSEMBLE]:
             print(s['id'], '|', s['name'], '|', s['family'])
         return
     if a.index:
@@ -983,6 +1031,7 @@ def main():
         jobs.append(('kit-orch', dict(id='kit-orchestral', name='Orchestral Kit', family='Drum Kits', max_s=8.0), roots, out))
     if a.vsco:
         jobs += [('vsco', s, roots, out) for s in VSCO_CATALOG]
+        jobs.append(('ensemble', ENSEMBLE, roots, out))
     if a.vd:
         jobs.append(('kit-vd', dict(id='kit-jazz', name='Jazz Kit', family='Drum Kits', max_s=4.0), roots, out))
     if only:
