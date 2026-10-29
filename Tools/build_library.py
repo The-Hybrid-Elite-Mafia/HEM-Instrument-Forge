@@ -552,6 +552,25 @@ def zone_record(rec, root, lo, hi, vlo, vhi, db, rr, rrn, keytrack, xin=None, xo
     return z
 
 
+_sample_index = {}
+
+
+def find_moved_sample(root, rel):
+    """A few VCSL sample folders sit one level off from where their .sfz points (for example the
+    psaltery inside 'Harpsichord, Italian'). Finds the file by its last path parts anywhere in VCSL."""
+    if root not in _sample_index:
+        idx = {}
+        for dirpath, _, files in os.walk(root):
+            for f in files:
+                if f.lower().endswith(('.wav', '.flac')):
+                    full = os.path.join(dirpath, f)
+                    parts = full.replace('\\', '/').split('/')
+                    idx.setdefault('/'.join(parts[-3:]).lower(), full)
+        _sample_index[root] = idx
+    key = '/'.join(rel.split('/')[-3:]).lower()
+    return _sample_index[root].get(key)
+
+
 def build_sfz_articulation(b, vcsl_root, art_name, sfz_rel, spec):
     path = os.path.join(vcsl_root, sfz_rel)
     regions = parse_sfz(path)
@@ -569,8 +588,11 @@ def build_sfz_articulation(b, vcsl_root, art_name, sfz_rel, spec):
             continue
         src = os.path.join(base, r.get('default_path', ''), r['sample'].replace('\\', '/'))
         if not os.path.exists(src):
-            log(f"{spec['id']}: missing {src}")
-            continue
+            moved = find_moved_sample(vcsl_root, r['sample'].replace('\\', '/'))
+            if moved is None:
+                log(f"{spec['id']}: missing {src}")
+                continue
+            src = moved
         lo = sfz_note(r.get('lokey', r.get('key', '0')))
         hi = sfz_note(r.get('hikey', r.get('key', '127')))
         if hi < lo:
