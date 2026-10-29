@@ -1,0 +1,56 @@
+[ OK ] Library                      / index lists installed instruments and families passes=5 failures=0
+[ OK ] Library                      / an instrument whose folder is missing is not listed passes=3 failures=0
+[ OK ] Library                      / instrument.json is read                  passes=7 failures=0
+[ OK ] Library                      / bad instrument files are refused with a reason passes=5 failures=0
+[ OK ] Library                      / velocity cross-fade gains                passes=5 failures=0
+[ OK ] Library                      / loading decodes heads; short samples stay resident, long ones stream passes=8 failures=0
+[ OK ] Sampler                      / a note plays its sample exactly, across the head / disk-stream join passes=2 failures=0
+[ OK ] Sampler                      / other keys are pitched from the nearest zone passes=1 failures=0
+[ OK ] Sampler                      / velocity picks the layer                 passes=2 failures=0
+[ OK ] Sampler                      / held notes loop seamlessly past the end of the sample passes=3 failures=0
+[ OK ] Sampler                      / release falls 60 dB in the release time  passes=2 failures=0
+[ OK ] Sampler                      / round robin cycles through its samples   passes=4 failures=0
+[ OK ] Sampler                      / sustain pedal: pedal zones and held notes passes=3 failures=0
+[ OK ] Sampler                      / no free disk stream: the note plays its head and fades out cleanly passes=3 failures=0
+[ OK ] Sampler                      / re-striking a key releases the old note; a closed hi-hat chokes the open one passes=2 failures=0
+[ OK ] Sampler                      / mono legato: the new note takes over without a fresh attack passes=2 failures=0
+[ OK ] Sampler                      / notes start at their sample offset inside a block passes=2 failures=0
+[ OK ] Sampler                      / note on / off and rendering never allocate passes=1 failures=0
+[ OK ] Stage                        / further back: quieter, darker, later, more room passes=6 failures=0
+[ OK ] Stage                        / left seats come out of the left speaker  passes=2 failures=0
+[ OK ] Stage                        / mono sum loses at most 3 dB for a hard-panned seat passes=1 failures=0
+[ OK ] Stage                        / headphone 3D: left source reaches the left ear first and louder passes=48002 failures=0
+[ OK ] Stage                        / room tail decays by its decay time       passes=96001 failures=0
+[ OK ] Stage                        / moving a seat while playing never jumps  passes=1 failures=0
+[ OK ] Stage                        / stage processing never allocates         passes=1 failures=0
+[ OK ] Engine                       / a note starts on its exact sample        passes=1 failures=0
+[ OK ] Engine                       / the loop plays the bar again             passes=1 failures=0
+[ OK ] Engine                       / live notes from the keyboard sound at once and stop on release passes=2 failures=0
+[ OK ] Engine                       / mute and solo                            passes=1 failures=0
+[ OK ] Engine                       / recording captures what is played live   passes=4 failures=0
+[ OK ] Engine                       / changing a track's instrument frees the old one once it is silent passes=2 failures=0
+[ OK ] Engine                       / 32 busy tracks: no allocation on the audio thread, and the CPU cost passes=514 failures=0
+[ OK ] Engine                       / the safety limiter holds the output under -0.3 dBFS passes=1 failures=0
+[ OK ] Session                      / session save / load round trip (song + parameters) passes=10 failures=0
+[ OK ] Session                      / not-a-session files are refused          passes=2 failures=0
+[ OK ] Session                      / MIDI file round trip                     passes=9 failures=0
+[ OK ] Session                      / song length rounds up to whole bars      passes=2 failures=0
+[ OK ] Band                         / every genre writes a song and every part gets a track with an instrument passes=124 failures=0
+[ OK ] Band                         / same request, same song                  passes=1 failures=0
+[ OK ] Band                         / re-rolling one part leaves the others alone passes=4 failures=0
+[ OK ] Band                         / parts are moved into the instrument's range by octaves passes=7 failures=0
+[ OK ] Band                         / candidates: drum parts get kits, melodic parts get pitched instruments passes=4 failures=0
+[ OK ] Band                         / request survives the session file format passes=3 failures=0
+[ OK ] Band                         / style text for Suno                      passes=2 failures=0
+[ OK ] Export                       / offline rendering is repeatable          passes=6 failures=0
+[ OK ] Export                       / stems add up to the mix                  passes=1 failures=0
+[ OK ] Export                       / export writes stems, a mastered mix and MIDI passes=9 failures=0
+[ OK ] Export                       / 16-bit / 44.1 kHz export                 passes=6 failures=0
+[ OK ] Export                       / a muted track is left out of the export  passes=2 failures=0
+[ OK ] Models                       / every modeled instrument makes clean, non-silent sound in every articulation passes=272 failures=0
+[ OK ] Models                       / modeled instruments play in tune         passes=136 failures=0
+[ OK ] Models                       / the trap kit has a sound on every note it lists passes=16 failures=0
+[ OK ] Models                       / loops are seamless                       passes=6 failures=0
+[ OK ] Models                       / a rendered model instrument loads like a recorded one passes=26 failures=0
+
+HEM TEST SUMMARY: 145248 passed, 0 failed

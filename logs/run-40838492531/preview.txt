@@ -1,0 +1,43 @@
+OK  : library opens
+library: 148 instruments
+shot: C:\hem\screens\01-band-empty.png
+OK  : band writes tracks
+OK  : balancing finishes
+  balanced level track 1: 4.0 dB
+  balanced level track 2: 7.0 dB
+  balanced level track 3: 1.2 dB
+  balanced level track 4: 4.9 dB
+  balanced level track 5: 4.8 dB
+  balanced level track 6: 4.2 dB
+  track 1: Jazz Kit  [kit-jazz]  308 notes  loaded
+  track 2: Electric Bass  [electric-bass]  56 notes  loaded
+  track 3: Acoustic Guitar (Steel)  [acoustic-guitar]  334 notes  loaded
+  track 4: Electric Guitar (Crunch)  [electric-guitar-crunch]  53 notes  loaded
+  track 5: Country Fiddle  [fiddle]  63 notes  loaded
+  track 6: Harmonica in C  [harmonica-c]  81 notes  loaded
+OK  : every band track has its instrument loaded
+master peak while playing: 0.272, voices 4
+OK  : the band makes sound
+shot: C:\hem\screens\02-band-written.png
+shot: C:\hem\screens\03-tracks-song.png
+shot: C:\hem\screens\04-tracks-notes.png
+OK  : edit applies
+OK  : undo brings the notes back
+shot: C:\hem\screens\05-stage.png
+shot: C:\hem\screens\06-instruments.png
+OK  : add track
+OK  : remove track
+OK  : track settings move up with their track
+OK  : undo restores tracks and their settings
+OK  : save session
+OK  : saved song is not dirty
+OK  : new song is empty
+OK  : open session
+OK  : reopened song has its tracks
+shot: C:\hem\screens\07-export.png
+export: Done: 8 file(s) in C:\Users\runneradmin\Documents\Hybrid Elite Mafia\Instrument Forge\Exports\Preview Song 2026-10-29 0815   (mastered, -14.1 LUFS, peak -1.0 dBFS)
+OK  : export finishes
+shot: C:\hem\screens\08-export-done.png
+shot: C:\hem\screens\09-tracks-laptop.png
+shot: C:\hem\screens\10-band-1080p.png
+PREVIEW: all checks passed
