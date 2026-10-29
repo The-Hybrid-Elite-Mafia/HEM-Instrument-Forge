@@ -4,6 +4,8 @@
 
 namespace hf
 {
+void createAppMutex();
+
 /** Forwards MIDI from every enabled input device to the engine. JUCE calls this from each device's
     own MIDI thread; the spin lock keeps the engine's single-producer MIDI queue single-producer.
     (MIDI threads only - the audio thread never takes this lock.) */
@@ -30,6 +32,7 @@ public:
 
     void initialise (const juce::String& commandLine) override
     {
+        createAppMutex();
         juce::PropertiesFile::Options o;
         o.applicationName = "Instrument Forge";
         o.folderName = "Hybrid Elite Mafia";

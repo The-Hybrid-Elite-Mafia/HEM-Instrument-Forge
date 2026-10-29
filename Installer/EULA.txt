@@ -1,0 +1,38 @@
+HEM INSTRUMENT FORGE - FREE END USER LICENSE AGREEMENT
+
+Copyright (c) 2026 Steven Reliford / Hybrid Elite Mafia. All rights reserved.
+
+Please read this agreement before installing. By installing or using HEM Instrument Forge ("the Software") you agree to these terms. If you do not agree, do not install or use the Software.
+
+1. FREE LICENSE
+You may download, install and use the Software free of charge, on as many of your own computers as you like, online or offline, for personal or professional work.
+
+2. YOUR MUSIC IS YOURS
+Everything you create with the Software (songs, beats, mixes, stems, exports and projects) belongs to you. You may use, sell and publish it however you want. No credit or payment is owed.
+
+3. WHAT YOU MAY NOT DO
+You may not:
+  a) sell, rent, lease or charge any fee for the Software, or bundle it with something you sell;
+  b) re-upload, mirror or redistribute the Software or its installer; share the official download link instead;
+  c) modify, translate, decompile, disassemble or reverse engineer the Software, except where the law expressly allows it despite this restriction;
+  d) remove, hide or change any copyright notice, name, logo or credit in the Software, its faceplates or its manual;
+  e) present the Software, or any part of it, as your own work or under another name;
+  f) extract or reuse the Software's artwork, faceplates, icons or manual outside the Software.
+
+4. OWNERSHIP
+The Software is licensed, not sold. Steven Reliford / Hybrid Elite Mafia keeps all rights, title and interest in the Software, including its code, design, artwork and documentation, except the third-party components listed in section 7. "Hybrid Elite Mafia", "Hybrid Studio" and the hooded-figure logo are names and marks of Hybrid Elite Mafia.
+
+5. UPDATES AND ENDING
+New versions may be released at any time and are covered by the agreement that comes with them. This license ends automatically if you break these terms; you must then uninstall and delete the Software.
+
+6. NO WARRANTY
+The Software is provided "AS IS", free of charge, without warranty of any kind, express or implied, including merchantability, fitness for a particular purpose and non-infringement. Keep backups of your projects and audio.
+
+7. THIRD-PARTY COMPONENTS
+The Software is built with the JUCE framework (juce.com), used under its own license. It uses the Poppins typeface by the Indian Type Foundry, licensed under the SIL Open Font License 1.1 (scripts.sil.org/OFL). The recorded instruments in the HEM Instrument Library come from the Versilian Community Sample Library, VS Chamber Orchestra 2: Community Edition and Virtuosity Drums, all dedicated to the public domain (CC0 1.0); full credits are in the Library folder (CREDITS.txt and LICENSES.txt). These components are not covered by the restrictions in section 3 and belong to their respective owners.
+
+8. LIMITATION OF LIABILITY
+To the maximum extent allowed by law, Steven Reliford / Hybrid Elite Mafia is not liable for any damages of any kind arising from the use of, or inability to use, the Software, including lost data, lost audio or lost profits.
+
+9. GENERAL
+If any part of this agreement cannot be enforced, the rest stays in effect. This is the entire agreement about the Software between you and Steven Reliford / Hybrid Elite Mafia.

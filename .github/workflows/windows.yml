@@ -1,0 +1,153 @@
+name: Build HEM Instrument Forge Windows installer
+
+# Manual only (Actions tab > Run workflow). Builds the app on a Windows machine in the cloud,
+# runs every unit test, builds the HEM Instrument Library from public-domain (CC0) recordings at
+# fixed commits plus the modeled instruments, runs the end-to-end preview (write a band, play it,
+# edit, save, reopen, export), makes the installer with Inno Setup and publishes one Release.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  VCSL_COMMIT: dfcf4a4918771eee884b96ad4493de82ef84daf6
+  VSCO_COMMIT: 440300901dfe9275fd84e0b7763af1f8443ae62e
+  VD_COMMIT: 9f04cf9a734527edfbb0a4eee1f674e45bbf71bc
+  WORK: C:\hem
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 340
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Python for the library build
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Disk space before
+        shell: pwsh
+        run: Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{n='FreeGB';e={[math]::Round($_.Free/1GB,1)}}
+
+      - name: Configure (downloads JUCE 8.0.15)
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DHF_BUILD_TESTS=ON -DHF_BUILD_APP=ON -DHF_BUILD_TOOLS=ON
+
+      - name: Build Release (app, tests, tools)
+        run: cmake --build build --config Release --parallel --target InstrumentForge ForgeTests ModelRender ScreenPreview
+
+      - name: Run the unit tests
+        shell: cmd
+        run: |
+          build\ForgeTests_artefacts\Release\ForgeTests.exe > tests.txt 2>&1
+          set RC=%ERRORLEVEL%
+          findstr /C:"[FAIL]" /C:"!!!" /C:"HEM TEST SUMMARY" /C:"pitch checked" /C:"CPU" tests.txt
+          exit /b %RC%
+
+      - name: Keep the test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForgeTests-log
+          path: tests.txt
+
+      - name: Get the recordings (public domain, fixed commits)
+        shell: bash
+        run: |
+          set -e
+          W=$(cygpath -u "$WORK")
+          mkdir -p "$W"
+          git config --global core.autocrlf false
+          git config --global core.longpaths true
+          # Versilian Community Sample Library (sfz branch: every instrument with its mapping)
+          git init -q "$W/vcsl"
+          git -C "$W/vcsl" remote add origin https://github.com/sgossner/VCSL.git
+          git -C "$W/vcsl" fetch -q --depth 1 origin "$VCSL_COMMIT"
+          git -C "$W/vcsl" checkout -q FETCH_HEAD
+          # VS Chamber Orchestra 2 CE: strings, brass, woodwinds
+          git clone -q --filter=blob:none --no-checkout https://github.com/sgossner/VSCO-2-CE.git "$W/vsco"
+          git -C "$W/vsco" sparse-checkout set Strings Brass Woodwinds
+          git -C "$W/vsco" checkout -q "$VSCO_COMMIT"
+          # Virtuosity Drums
+          git clone -q --filter=blob:none --no-checkout https://github.com/sfzinstruments/virtuosity_drums.git "$W/vd"
+          git -C "$W/vd" checkout -q "$VD_COMMIT"
+          du -sh "$W/vcsl" "$W/vsco" "$W/vd"
+
+      - name: Render the modeled instruments
+        shell: cmd
+        run: build\ModelRender_artefacts\Release\ModelRender.exe --out %WORK%\models --jobs 4
+
+      - name: Build the HEM Instrument Library
+        shell: bash
+        run: |
+          set -e
+          python -m pip install --quiet numpy scipy soundfile
+          W=$(cygpath -w "$WORK")
+          python -I Tools/build_library.py --vcsl "$W\\vcsl" --vsco "$W\\vsco" --vd "$W\\vd" --models "$W\\models" --out "$W\\library" --jobs 4
+          grep -c "FAILED" "$(cygpath -u "$WORK")/library/BUILD-REPORT.txt" && exit 1 || true
+          du -sh "$(cygpath -u "$WORK")/library"
+
+      - name: Free the space the sources used
+        shell: bash
+        run: rm -rf "$(cygpath -u "$WORK")/vcsl" "$(cygpath -u "$WORK")/vsco" "$(cygpath -u "$WORK")/vd" "$(cygpath -u "$WORK")/models"
+
+      - name: Keep the library build report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Library-build-report
+          path: |
+            C:\hem\library\BUILD-REPORT.txt
+            C:\hem\library\index.json
+            C:\hem\models\MODEL-REPORT.txt
+
+      - name: End-to-end preview with the real library (band, play, edit, save, reopen, export)
+        shell: cmd
+        run: |
+          build\ScreenPreview_artefacts\Release\ScreenPreview.exe %WORK%\screens %WORK%\library > preview.txt 2>&1
+          set RC=%ERRORLEVEL%
+          type preview.txt
+          exit /b %RC%
+
+      - name: Keep the preview screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Preview-screens
+          path: |
+            C:\hem\screens\*.png
+            preview.txt
+
+      - name: Install Inno Setup 6
+        run: choco install innosetup -y --no-progress
+
+      - name: Build the installer
+        shell: cmd
+        run: |
+          for /f "tokens=4 delims=( " %%v in ('findstr /C:"project(HEMInstrumentForge VERSION" CMakeLists.txt') do set VER=%%v
+          set "ISCC=%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe"
+          if not exist "%ISCC%" set "ISCC=%ProgramFiles%\Inno Setup 6\ISCC.exe"
+          "%ISCC%" "/DBuildDir=%GITHUB_WORKSPACE%\build\InstrumentForge_artefacts\Release" "/DLibraryDir=%WORK%\library" "/DAppVersion=%VER%" "/O%WORK%\installer" Installer\InstrumentForge.iss
+          dir %WORK%\installer
+
+      - name: Publish the installer as a Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          OUT=$(cygpath -u "$WORK")/installer
+          VER=$(sed -n 's/.*project(HEMInstrumentForge VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
+          test -n "$VER"
+          TESTS=$(grep "HEM TEST SUMMARY" tests.txt || true)
+          PREVIEW=$(grep "PREVIEW:" preview.txt || true)
+          LIB=$(python -c "import json;d=json.load(open(r'$(cygpath -w "$WORK")\\library\\index.json'));print(len(d['instruments']),'instruments,',round(sum(i['bytes'] for i in d['instruments'])/1e9,2),'GB')")
+          gh release create "forge-$VER-run-${{ github.run_id }}" "$OUT"/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "${{ github.sha }}" \
+            --title "HEM Instrument Forge $VER (Windows PC)" \
+            --notes "Windows installer built in the cloud from commit ${{ github.sha }}. Library: $LIB. $TESTS. $PREVIEW. Download EVERY file of this release into the same folder (the .exe and its .bin parts), then run the .exe. Not code-signed: if Windows SmartScreen says 'Windows protected your PC', click More info, then Run anyway."

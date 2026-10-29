@@ -93,7 +93,7 @@ if(HF_BUILD_APP)
         VERSION ${PROJECT_VERSION}
         ICON_BIG   ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icon/HEM-Icon-1024.png
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icon/HEM-Icon-1024.png)
-    target_sources(InstrumentForge PRIVATE ${HF_CORE_SOURCES} ${HF_UI_SOURCES} Source/Main.cpp)
+    target_sources(InstrumentForge PRIVATE ${HF_CORE_SOURCES} ${HF_UI_SOURCES} Source/Main.cpp Source/AppMutex.cpp)
     target_include_directories(InstrumentForge PRIVATE Source)
     target_compile_definitions(InstrumentForge PRIVATE ${HF_COMMON_DEFS} HEM_VERSION_STRING="${PROJECT_VERSION}")
     target_link_libraries(InstrumentForge
