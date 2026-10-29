@@ -18,6 +18,8 @@ struct RoleChoice
 
 /** Plain name of a part ("Acoustic Guitar part"). */
 juce::String roleName (band::Instrument);
+/** Loudness (RMS dBFS while playing) a part is balanced to; role -1 (drawn / imported parts) gets -22. */
+float roleTargetRmsDb (int role);
 /** Drum parts use General MIDI drum notes and need a drum kit. */
 bool isDrumRole (band::Instrument);
 

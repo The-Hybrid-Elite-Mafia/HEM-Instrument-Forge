@@ -32,6 +32,22 @@ juce::String roleName (I r)
 
 bool isDrumRole (I r) { return r == I::drums || r == I::trapDrums; }
 
+float roleTargetRmsDb (int role)
+{
+    // the band's balance (same table the Band Forge renderer levels its stems to)
+    switch (role < 0 || role >= (int) I::count ? I::count : (I) role)
+    {
+        case I::drums: return -17.0f;          case I::trapDrums: return -16.0f;
+        case I::bass: return -19.0f;           case I::uprightBass: return -20.0f;  case I::bass808: return -17.0f;
+        case I::acousticGuitar: return -21.0f; case I::electricGuitar: return -22.5f;
+        case I::banjo: return -23.0f;          case I::mandolin: return -24.0f;
+        case I::fiddle: return -22.0f;         case I::harmonica: return -23.0f;
+        case I::piano: return -21.5f;          case I::organ: return -26.0f;        case I::strings: return -24.5f;
+        case I::count: default: break;
+    }
+    return -22.0f;
+}
+
 namespace
 {
 std::vector<juce::String> preferences (I r, G g)

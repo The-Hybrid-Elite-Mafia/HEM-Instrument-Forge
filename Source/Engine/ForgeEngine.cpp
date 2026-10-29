@@ -563,7 +563,9 @@ void ForgeEngine::processChunk (float* outL, float* outR, int n) noexcept
         metronome (mixBuf.getWritePointer (0), mixBuf.getWritePointer (1), n, b0, b0 + n * beatsPerSample);
 
     // master + safety limiter (-0.3 dBFS, instant attack, 80 ms release)
-    const float master = juce::Decibels::decibelsToGain (pMaster->load (std::memory_order_relaxed), -59.9f);
+    // the library levels each instrument to about -20 dBFS RMS; a band of them needs room above that,
+    // so the mix bus sits kMixHeadroomDb lower (the mastered export brings the loudness back up)
+    const float master = juce::Decibels::decibelsToGain (pMaster->load (std::memory_order_relaxed) + kMixHeadroomDb, -59.9f);
     const float ceiling = juce::Decibels::decibelsToGain (-0.3f);
     const float rel = 1.0f - std::exp (-1.0f / (0.08f * (float) sampleRateHz));
     const float* ml = mixBuf.getReadPointer (0);

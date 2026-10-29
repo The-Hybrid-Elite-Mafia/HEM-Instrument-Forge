@@ -2,7 +2,7 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace pg::ui
+namespace hf::ui
 {
 /**
     Cuts the pieces of Steven's main faceplate (Assets/Faceplates/Main-Faceplate.png, 3840 x 2160)
@@ -60,4 +60,4 @@ private:
 
     std::array<juce::Image, 3> mips;   // 1, 1/2, 1/4
 };
-} // namespace pg::ui
+} // namespace hf::ui

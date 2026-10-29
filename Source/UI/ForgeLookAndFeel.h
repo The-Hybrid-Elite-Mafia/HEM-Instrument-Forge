@@ -2,7 +2,7 @@
 
 #include "FaceplateKit.h"
 
-namespace pg::ui
+namespace hf::ui
 {
 namespace colours
 {
@@ -24,13 +24,13 @@ namespace props
 }
 
 /**
-    Rework Playground look: controls are drawn in code over the faceplate pieces
+    Instrument Forge look (same chrome as the other HEM apps): controls are drawn in code over the faceplate pieces
     (knobs sit in the chrome sockets, tabs in the tab slots, readouts behind glass).
 */
-class PlaygroundLookAndFeel : public juce::LookAndFeel_V4
+class ForgeLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-    explicit PlaygroundLookAndFeel (juce::Colour accent = colours::glow);
+    explicit ForgeLookAndFeel (juce::Colour accent = colours::glow);
 
     void setAccent (juce::Colour c) noexcept { accent = c; }
     juce::Colour getAccent() const noexcept { return accent; }
@@ -66,4 +66,4 @@ public:
 private:
     juce::Colour accent;
 };
-} // namespace pg::ui
+} // namespace hf::ui

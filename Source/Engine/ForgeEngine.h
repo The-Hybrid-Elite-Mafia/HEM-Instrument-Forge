@@ -28,6 +28,7 @@ class ForgeEngine final : public juce::AudioProcessor
 {
 public:
     static constexpr int kChunk = 256;   // internal processing block (events are sample-exact inside it)
+    static constexpr float kMixHeadroomDb = -8.0f;   // fixed mix-bus headroom (see processChunk)
 
     struct Ids
     {
@@ -96,7 +97,6 @@ public:
     int getUnderruns() const noexcept { return streamer.underruns.load(); }
     double getCpuLoad() const noexcept { return loadMeasurer.getLoadAsProportion(); }
     double getEngineSampleRate() const noexcept { return sampleRateHz; }
-    const StageTrack::Geometry& getGeometry (int t) const noexcept { return stages[(size_t) t].lastGeometry(); }
 
     // ---- offline (exporter) ----------------------------------------------------------
     /** Renders from the current position (offline engines only). */

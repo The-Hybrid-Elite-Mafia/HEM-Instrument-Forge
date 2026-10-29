@@ -1,7 +1,7 @@
 #include "FaceplateKit.h"
-#include "PlaygroundBinaryData.h"
+#include "ForgeBinaryData.h"
 
-namespace pg::ui
+namespace hf::ui
 {
 namespace
 {
@@ -35,7 +35,7 @@ FaceplateKit& FaceplateKit::get()
 
 FaceplateKit::FaceplateKit()
 {
-    auto full = juce::ImageCache::getFromMemory (PlaygroundBinary::MainFaceplate_png, PlaygroundBinary::MainFaceplate_pngSize);
+    auto full = juce::ImageCache::getFromMemory (ForgeBinary::MainFaceplate_png, ForgeBinary::MainFaceplate_pngSize);
     if (! full.isValid()) return;
     mips[0] = full.convertedToFormat (juce::Image::ARGB);
     mips[1] = halve (mips[0]);
@@ -128,4 +128,4 @@ void FaceplateKit::drawFrameBorder (juce::Graphics& g, juce::Rectangle<float> de
                 drawRegion (g, img, ms, { sxs[col], sys[row], sxs[col + 1] - sxs[col], sys[row + 1] - sys[row] },
                                         { dxs[col], dys[row], dxs[col + 1] - dxs[col], dys[row + 1] - dys[row] });
 }
-} // namespace pg::ui
+} // namespace hf::ui

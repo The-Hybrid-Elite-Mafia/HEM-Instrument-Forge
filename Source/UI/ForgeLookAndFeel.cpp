@@ -1,24 +1,24 @@
-#include "PlaygroundLookAndFeel.h"
-#include "PlaygroundBinaryData.h"
+#include "ForgeLookAndFeel.h"
+#include "ForgeBinaryData.h"
 
-namespace pg::ui
+namespace hf::ui
 {
 namespace
 {
     juce::Typeface::Ptr boldFace()
     {
-        static auto t = juce::Typeface::createSystemTypefaceFor (PlaygroundBinary::PoppinsBold_ttf, PlaygroundBinary::PoppinsBold_ttfSize);
+        static auto t = juce::Typeface::createSystemTypefaceFor (ForgeBinary::PoppinsBold_ttf, ForgeBinary::PoppinsBold_ttfSize);
         return t;
     }
     juce::Typeface::Ptr mediumFace()
     {
-        static auto t = juce::Typeface::createSystemTypefaceFor (PlaygroundBinary::PoppinsMedium_ttf, PlaygroundBinary::PoppinsMedium_ttfSize);
+        static auto t = juce::Typeface::createSystemTypefaceFor (ForgeBinary::PoppinsMedium_ttf, ForgeBinary::PoppinsMedium_ttfSize);
         return t;
     }
     juce::String styleOf (const juce::Component& c) { return c.getProperties()[props::style].toString(); }
 }
 
-PlaygroundLookAndFeel::PlaygroundLookAndFeel (juce::Colour a) : accent (a)
+ForgeLookAndFeel::ForgeLookAndFeel (juce::Colour a) : accent (a)
 {
     setColour (juce::PopupMenu::backgroundColourId, juce::Colour (0xff1b1f26));
     setColour (juce::PopupMenu::textColourId, colours::paper);
@@ -45,30 +45,30 @@ PlaygroundLookAndFeel::PlaygroundLookAndFeel (juce::Colour a) : accent (a)
     setColour (juce::TooltipWindow::outlineColourId, accent.withAlpha (0.5f));
 }
 
-juce::Colour PlaygroundLookAndFeel::accentOf (const juce::Component& c) const
+juce::Colour ForgeLookAndFeel::accentOf (const juce::Component& c) const
 {
     const auto v = c.getProperties()[props::accent];
     return v.isVoid() ? accent : juce::Colour ((juce::uint32) (juce::int64) v);
 }
 
-juce::Font PlaygroundLookAndFeel::font (float height, bool bold)
+juce::Font ForgeLookAndFeel::font (float height, bool bold)
 {
     auto f = juce::Font (juce::FontOptions (bold ? boldFace() : mediumFace()).withHeight (height));
     return f;
 }
 
-juce::Typeface::Ptr PlaygroundLookAndFeel::getTypefaceForFont (const juce::Font& f)
+juce::Typeface::Ptr ForgeLookAndFeel::getTypefaceForFont (const juce::Font& f)
 {
     if (f.getTypefaceName() == juce::Font::getDefaultSansSerifFontName())
         return f.isBold() ? boldFace() : mediumFace();
     return LookAndFeel_V4::getTypefaceForFont (f);
 }
 
-juce::Font PlaygroundLookAndFeel::getComboBoxFont (juce::ComboBox& b)   { return font (juce::jmin (styleOf (b) == "dark" ? 14.0f : 18.0f, (float) b.getHeight() * 0.5f)); }
-juce::Font PlaygroundLookAndFeel::getTextButtonFont (juce::TextButton&, int h) { return font (juce::jmin (17.0f, (float) h * 0.42f)); }
-juce::Font PlaygroundLookAndFeel::getPopupMenuFont()                     { return font (16.0f, false); }
+juce::Font ForgeLookAndFeel::getComboBoxFont (juce::ComboBox& b)   { return font (juce::jmin (styleOf (b) == "dark" ? 14.0f : 18.0f, (float) b.getHeight() * 0.5f)); }
+juce::Font ForgeLookAndFeel::getTextButtonFont (juce::TextButton&, int h) { return font (juce::jmin (17.0f, (float) h * 0.42f)); }
+juce::Font ForgeLookAndFeel::getPopupMenuFont()                     { return font (16.0f, false); }
 
-void PlaygroundLookAndFeel::positionComboBoxText (juce::ComboBox& box, juce::Label& label)
+void ForgeLookAndFeel::positionComboBoxText (juce::ComboBox& box, juce::Label& label)
 {
     const int inset = styleOf (box) == "dark" ? 5 : juce::roundToInt ((float) box.getHeight() * 0.3f);
     label.setBounds (inset, 1, box.getWidth() - box.getHeight() - inset, box.getHeight() - 2);
@@ -77,7 +77,7 @@ void PlaygroundLookAndFeel::positionComboBoxText (juce::ComboBox& box, juce::Lab
 }
 
 //==============================================================================
-void PlaygroundLookAndFeel::drawLed (juce::Graphics& g, juce::Point<float> c, float r, juce::Colour col, bool on)
+void ForgeLookAndFeel::drawLed (juce::Graphics& g, juce::Point<float> c, float r, juce::Colour col, bool on)
 {
     if (on)
     {
@@ -93,7 +93,7 @@ void PlaygroundLookAndFeel::drawLed (juce::Graphics& g, juce::Point<float> c, fl
     g.drawEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f, juce::jmax (1.0f, r * 0.15f));
 }
 
-void PlaygroundLookAndFeel::drawEngraved (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::Justification j, float h)
+void ForgeLookAndFeel::drawEngraved (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::Justification j, float h)
 {
     g.setFont (font (h));
     g.setColour (juce::Colours::white.withAlpha (0.65f));
@@ -102,7 +102,7 @@ void PlaygroundLookAndFeel::drawEngraved (juce::Graphics& g, const juce::String&
     g.drawText (text, r, j, false);
 }
 
-void PlaygroundLookAndFeel::drawPanelText (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::Justification j, float h, juce::Colour c)
+void ForgeLookAndFeel::drawPanelText (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::Justification j, float h, juce::Colour c)
 {
     g.setFont (font (h));
     g.setColour (juce::Colours::black.withAlpha (0.55f));
@@ -112,7 +112,7 @@ void PlaygroundLookAndFeel::drawPanelText (juce::Graphics& g, const juce::String
 }
 
 //==============================================================================
-void PlaygroundLookAndFeel::drawKnob (juce::Graphics& g, juce::Rectangle<float> b, float pos, float start, float end,
+void ForgeLookAndFeel::drawKnob (juce::Graphics& g, juce::Rectangle<float> b, float pos, float start, float end,
                                       bool bipolar, float zeroPos, juce::Colour acc, bool hot) const
 {
     const auto c = b.getCentre();
@@ -168,7 +168,7 @@ void PlaygroundLookAndFeel::drawKnob (juce::Graphics& g, juce::Rectangle<float> 
     g.drawLine ({ p0, p1 }, R * 0.035f);
 }
 
-void PlaygroundLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int w, int h, float pos, float start, float end, juce::Slider& s)
+void ForgeLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int w, int h, float pos, float start, float end, juce::Slider& s)
 {
     const float size = (float) juce::jmin (w, h);
     const auto b = juce::Rectangle<float> ((float) x, (float) y, (float) w, (float) h).withSizeKeepingCentre (size, size);
@@ -178,7 +178,7 @@ void PlaygroundLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, i
 }
 
 //==============================================================================
-void PlaygroundLookAndFeel::drawButtonBackground (juce::Graphics& g, juce::Button& b, const juce::Colour&, bool over, bool down)
+void ForgeLookAndFeel::drawButtonBackground (juce::Graphics& g, juce::Button& b, const juce::Colour&, bool over, bool down)
 {
     const auto style = styleOf (b);
     auto r = b.getLocalBounds().toFloat();
@@ -225,7 +225,7 @@ void PlaygroundLookAndFeel::drawButtonBackground (juce::Graphics& g, juce::Butto
     }
 }
 
-void PlaygroundLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton& b, bool, bool)
+void ForgeLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton& b, bool, bool)
 {
     const auto r = b.getLocalBounds().toFloat();
     const float h = getTextButtonFont (b, b.getHeight()).getHeight();
@@ -258,7 +258,7 @@ void PlaygroundLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton&
     drawEngraved (g, b.getButtonText(), r, juce::Justification::centred, h);
 }
 
-void PlaygroundLookAndFeel::drawToggleButton (juce::Graphics& g, juce::ToggleButton& b, bool over, bool)
+void ForgeLookAndFeel::drawToggleButton (juce::Graphics& g, juce::ToggleButton& b, bool over, bool)
 {
     // "led": round socket with an LED, label to the right in the button's text colour
     auto r = b.getLocalBounds().toFloat();
@@ -277,7 +277,7 @@ void PlaygroundLookAndFeel::drawToggleButton (juce::Graphics& g, juce::ToggleBut
     }
 }
 
-void PlaygroundLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int w, int h, float pos, float, float,
+void ForgeLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int w, int h, float pos, float, float,
                                               juce::Slider::SliderStyle style, juce::Slider& s)
 {
     const auto acc = accentOf (s);
@@ -328,22 +328,22 @@ void PlaygroundLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, i
     g.drawEllipse (pos - r, b.getCentreY() - r, r * 2.0f, r * 2.0f, 1.0f);
 }
 
-void PlaygroundLookAndFeel::drawMenuBarBackground (juce::Graphics&, int, int, bool, juce::MenuBarComponent&)
+void ForgeLookAndFeel::drawMenuBarBackground (juce::Graphics&, int, int, bool, juce::MenuBarComponent&)
 {
     // the menu sits on the faceplate's chrome strip: nothing to paint
 }
 
-juce::Font PlaygroundLookAndFeel::getMenuBarFont (juce::MenuBarComponent& bar, int, const juce::String&)
+juce::Font ForgeLookAndFeel::getMenuBarFont (juce::MenuBarComponent& bar, int, const juce::String&)
 {
     return font (juce::jlimit (12.0f, 20.0f, (float) bar.getHeight() * 0.42f));
 }
 
-int PlaygroundLookAndFeel::getMenuBarItemWidth (juce::MenuBarComponent& bar, int index, const juce::String& text)
+int ForgeLookAndFeel::getMenuBarItemWidth (juce::MenuBarComponent& bar, int index, const juce::String& text)
 {
     return juce::roundToInt (juce::GlyphArrangement::getStringWidth (getMenuBarFont (bar, index, text), text)) + bar.getHeight();
 }
 
-void PlaygroundLookAndFeel::drawMenuBarItem (juce::Graphics& g, int w, int h, int, const juce::String& text, bool over, bool open, bool, juce::MenuBarComponent& bar)
+void ForgeLookAndFeel::drawMenuBarItem (juce::Graphics& g, int w, int h, int, const juce::String& text, bool over, bool open, bool, juce::MenuBarComponent& bar)
 {
     const auto r = juce::Rectangle<float> (0.0f, 0.0f, (float) w, (float) h);
     if (open || over)
@@ -354,7 +354,7 @@ void PlaygroundLookAndFeel::drawMenuBarItem (juce::Graphics& g, int w, int h, in
     drawEngraved (g, text, r, juce::Justification::centred, getMenuBarFont (bar, 0, text).getHeight());
 }
 
-void PlaygroundLookAndFeel::drawComboBox (juce::Graphics& g, int w, int h, bool, int, int, int, int, juce::ComboBox& box)
+void ForgeLookAndFeel::drawComboBox (juce::Graphics& g, int w, int h, bool, int, int, int, int, juce::ComboBox& box)
 {
     // "plate": draws its own brushed plate; otherwise it sits on a plate the editor drew
     if (styleOf (box) == "plate")
@@ -373,4 +373,4 @@ void PlaygroundLookAndFeel::drawComboBox (juce::Graphics& g, int w, int h, bool,
     g.setColour (box.findColour (juce::ComboBox::arrowColourId).withAlpha (box.isEnabled() ? 0.85f : 0.3f));
     g.fillPath (tri);
 }
-} // namespace pg::ui
+} // namespace hf::ui
