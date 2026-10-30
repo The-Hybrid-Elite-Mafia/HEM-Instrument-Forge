@@ -1,0 +1,282 @@
+upright-piano-b: 1 articulation(s), 138 zones, 138 files, range 21..108, gain -1.4 dB
+harpsichord-english: 2 articulation(s), 107 zones, 107 files, range 34..89, gain +6.9 dB
+upright-piano-a: 1 articulation(s), 135 zones, 135 files, range 21..109, gain -6.3 dB
+harpsichord-flemish: 3 articulation(s), 216 zones, 108 files, range 29..84, gain +6.4 dB
+harpsichord-french: 1 articulation(s), 58 zones, 58 files, range 24..84, gain +6.8 dB
+grand-piano-a: 1 articulation(s), 222 zones, 222 files, range 21..109, gain +1.2 dB
+harpsichord-italian: 1 articulation(s), 63 zones, 63 files, range 29..84, gain +6.2 dB
+pipe-organ: 4 articulation(s), 64 zones, 64 files, range 36..97, gain -3.7 dB
+chamber-organ: 4 articulation(s), 135 zones, 81 files, range 36..89, gain -1.6 dB
+concert-harp: 1 articulation(s), 45 zones, 45 files, range 28..102, gain -1.1 dB
+fm-keys: 3 articulation(s), 189 zones, 189 files, range 24..109, gain -3.8 dB
+folk-harp: 1 articulation(s), 58 zones, 58 files, range 36..93, gain -2.8 dB
+strumstick: 1 articulation(s), 57 zones, 57 files, range 48..84, gain +11.7 dB
+psaltery: 3 articulation(s), 33 zones, 33 files, range 67..91, gain +2.6 dB
+recorder-soprano: 2 articulation(s), 25 zones, 25 files, range 72..98, gain -8.0 dB
+recorder-alto: 3 articulation(s), 36 zones, 36 files, range 65..91, gain -4.1 dB
+recorder-tenor: 3 articulation(s), 39 zones, 39 files, range 60..86, gain +2.3 dB
+recorder-bass: 3 articulation(s), 41 zones, 41 files, range 53..79, gain -3.4 dB
+dan-tranh: 5 articulation(s), 115 zones, 115 files, range 47..84, gain +4.4 dB
+ocarina-small: 2 articulation(s), 23 zones, 23 files, range 81..97, gain -9.4 dB
+ocarina: 2 articulation(s), 42 zones, 42 files, range 69..86, gain -1.4 dB
+saxello: 3 articulation(s), 39 zones, 39 files, range 58..89, gain -8.7 dB
+didgeridoo: 1 articulation(s), 12 zones, 12 files, range 60..71, gain +7.8 dB
+harmonica-c: 3 articulation(s), 58 zones, 58 files, range 60..97, gain -1.9 dB
+harmonica-f: 5 articulation(s), 94 zones, 94 files, range 65..97, gain -0.1 dB
+siren: 1 articulation(s), 5 zones, 5 files, range 60..64, gain +5.6 dB
+ball-whistle: 1 articulation(s), 2 zones, 2 files, range 60..61, gain +3.6 dB
+train-whistle: 1 articulation(s), 6 zones, 6 files, range 60..65, gain +13.8 dB
+harmonica-chromatic: 3 articulation(s), 78 zones, 78 files, range 48..97, gain -7.6 dB
+tenor-sax: 3 articulation(s), 105 zones, 105 files, range 44..89, gain -9.0 dB
+glockenspiel: 1 articulation(s), 18 zones, 18 files, range 67..97, gain +3.4 dB
+xylophone: 3 articulation(s), 47 zones, 47 files, range 55..97, gain +4.0 dB
+marimba: 1 articulation(s), 30 zones, 30 files, range 41..97, gain -1.8 dB
+tubular-bells: 1 articulation(s), 18 zones, 18 files, range 60..77, gain -2.4 dB
+grand-piano-b: 1 articulation(s), 351 zones, 351 files, range 21..108, gain -2.1 dB
+tubular-bells-2: 1 articulation(s), 22 zones, 22 files, range 60..79, gain -5.7 dB
+tubular-glock: 1 articulation(s), 25 zones, 25 files, range 79..94, gain +2.1 dB
+vibraphone: 3 articulation(s), 50 zones, 50 files, range 53..89, gain -3.4 dB
+balafon: 3 articulation(s), 54 zones, 54 files, range 60..91, gain +9.2 dB
+wine-glasses: 2 articulation(s), 16 zones, 16 files, range 74..87, gain -4.3 dB
+kalimba-kenya: 1 articulation(s), 15 zones, 15 files, range 59..84, gain +6.5 dB
+hand-chimes: 1 articulation(s), 19 zones, 19 files, range 60..97, gain -4.5 dB
+kalimba-tanzania: 1 articulation(s), 27 zones, 27 files, range 43..98, gain +1.5 dB
+nyunga-nyunga: 1 articulation(s), 19 zones, 19 files, range 53..78, gain +4.7 dB
+mbira-nyamaropa: 1 articulation(s), 24 zones, 24 files, range 46..86, gain +3.5 dB
+agogo: 1 articulation(s), 5 zones, 5 files, range 60..61, gain +16.2 dB
+anvil: 1 articulation(s), 9 zones, 9 files, range 60..62, gain +7.6 dB
+mbira-gandanga: 1 articulation(s), 24 zones, 24 files, range 46..82, gain +0.7 dB
+bell-tree: 2 articulation(s), 11 zones, 11 files, range 60..64, gain +14.5 dB
+brake-drum: 1 articulation(s), 17 zones, 17 files, range 60..67, gain +15.7 dB
+cabasa: 1 articulation(s), 6 zones, 6 files, range 60..61, gain +16.2 dB
+claps: 1 articulation(s), 10 zones, 10 files, range 60..61, gain +9.9 dB
+cajon: 1 articulation(s), 18 zones, 18 files, range 60..62, gain +10.9 dB
+clash-cymbals-2: 1 articulation(s), 5 zones, 5 files, range 60..60, gain +4.7 dB
+clash-cymbals: 1 articulation(s), 10 zones, 10 files, range 60..62, gain +9.1 dB
+claves: 1 articulation(s), 6 zones, 6 files, range 60..61, gain +16.9 dB
+finger-cymbals: 1 articulation(s), 1 zones, 1 files, range 60..60, gain +22.3 dB
+cowbells: 1 articulation(s), 13 zones, 13 files, range 60..65, gain +12.8 dB
+flexatone: 1 articulation(s), 8 zones, 8 files, range 60..67, gain +15.2 dB
+gong-2: 1 articulation(s), 6 zones, 6 files, range 60..65, gain +6.6 dB
+guiro: 1 articulation(s), 5 zones, 5 files, range 60..63, gain +24.0 dB
+hand-bells: 1 articulation(s), 3 zones, 3 files, range 60..62, gain +11.7 dB
+timpani: 2 articulation(s), 40 zones, 40 files, range 41..55, gain -4.5 dB
+gong: 1 articulation(s), 7 zones, 7 files, range 60..62, gain +11.9 dB
+hi-hat: 1 articulation(s), 15 zones, 15 files, range 42..46, gain +9.4 dB
+shaker-large: 1 articulation(s), 6 zones, 6 files, range 60..62, gain +17.3 dB
+ratchet: 1 articulation(s), 8 zones, 8 files, range 60..65, gain +11.2 dB
+shaker-small: 1 articulation(s), 16 zones, 16 files, range 60..67, gain +11.2 dB
+slapstick: 1 articulation(s), 5 zones, 5 files, range 60..61, gain +15.9 dB
+slit-drum: 1 articulation(s), 6 zones, 6 files, range 60..61, gain +7.4 dB
+sleigh-bells: 1 articulation(s), 6 zones, 6 files, range 60..64, gain +11.5 dB
+mark-tree: 1 articulation(s), 6 zones, 6 files, range 60..65, gain +21.5 dB
+timpani-2: 1 articulation(s), 54 zones, 54 files, range 38..59, gain -2.1 dB
+tambourine-2: 1 articulation(s), 7 zones, 7 files, range 60..62, gain +7.7 dB
+tambourine: 1 articulation(s), 7 zones, 7 files, range 60..62, gain +7.5 dB
+vibraslap: 1 articulation(s), 4 zones, 4 files, range 60..60, gain +8.7 dB
+woodblock: 1 articulation(s), 10 zones, 10 files, range 60..62, gain +9.9 dB
+ocean-drum: 1 articulation(s), 3 zones, 3 files, range 60..62, gain +11.2 dB
+concert-bass-drum: 1 articulation(s), 8 zones, 8 files, range 60..60, gain -3.3 dB
+triangles: 1 articulation(s), 37 zones, 37 files, range 60..72, gain +14.4 dB
+suspended-cymbal: 1 articulation(s), 22 zones, 22 files, range 60..72, gain +8.9 dB
+suspended-cymbal-2: 1 articulation(s), 23 zones, 23 files, range 60..70, gain +22.2 dB
+darbuka: 1 articulation(s), 20 zones, 20 files, range 60..64, gain +18.7 dB
+bongos: 1 articulation(s), 28 zones, 28 files, range 60..65, gain +4.2 dB
+congas: 1 articulation(s), 34 zones, 34 files, range 60..65, gain +0.5 dB
+frame-drum: 1 articulation(s), 18 zones, 18 files, range 60..65, gain +7.7 dB
+snare-2: 1 articulation(s), 24 zones, 24 files, range 60..66, gain +11.6 dB
+snare-3: 1 articulation(s), 19 zones, 19 files, range 60..65, gain +14.4 dB
+snare-1: 1 articulation(s), 29 zones, 29 files, range 60..65, gain +6.0 dB
+snare-marching: 1 articulation(s), 17 zones, 17 files, range 60..62, gain +8.2 dB
+snare-rope: 1 articulation(s), 32 zones, 32 files, range 60..65, gain +7.2 dB
+tom-high: 1 articulation(s), 22 zones, 22 files, range 60..65, gain +12.5 dB
+concert-bass-drum-2: 1 articulation(s), 30 zones, 30 files, range 60..70, gain -3.9 dB
+tom-low: 1 articulation(s), 22 zones, 22 files, range 60..65, gain +13.7 dB
+kit-orchestral: drum kit, 157 zones on GM notes [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 53, 54, 56, 57, 58, 60, 61, 62, 63, 64, 67, 68, 69, 70, 73, 75, 76, 80, 81], gain -1.9 dB
+violin-section: 4 articulation(s), 128 zones, 128 files, range 48..93, gain +13.3 dB
+violin-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Sustain: 22 samples, notes 55..86, 2 layer(s)
+violin-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Spiccato: VlnEns_Spic_G2_v1_rr2.wav measures -4.91 semitones off note 55 - left out
+violin-section/Spiccato: 43 samples, notes 55..86, 2 layer(s), 1 left out
+violin-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Pizzicato: VlnEns_Pizz_D5_v1_rr1.wav measures +5.01 semitones off note 86 - left out
+violin-section/Pizzicato: VlnEns_Pizz_D5_v1_rr2.wav measures +5.05 semitones off note 86 - left out
+violin-section/Pizzicato: 42 samples, notes 55..86, 2 layer(s), 2 left out
+violin-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Tremolo: 21 samples, notes 55..86, 2 layer(s)
+fiddle: 3 articulation(s), 130 zones, 130 files, range 48..103, gain +4.3 dB
+fiddle/Sustain: LLVln_ArcoVib_G3_p.wav measures -5.18 semitones off note 55 - left out
+fiddle/Sustain: LLVln_ArcoVib_G6_p.wav measures +4.91 semitones off note 91 - left out
+fiddle/Sustain: 28 samples, notes 55..96, 2 layer(s), 2 left out
+fiddle/Short: file names are +1 octave(s) off the measured pitch - corrected
+fiddle/Short: 60 samples, notes 55..96, 2 layer(s)
+fiddle/Pizzicato: LLVln_Pizz_C7_f.wav measures -5.07 semitones off note 96 - left out
+fiddle/Pizzicato: LLVln_Pizz_E6_f_RR2.wav measures +2.91 semitones off note 88 - left out
+fiddle/Pizzicato: 42 samples, notes 55..93, 2 layer(s), 2 left out
+solo-violin: 4 articulation(s), 157 zones, 157 files, range 48..103, gain +4.3 dB
+solo-violin/Sustain: LLVln_ArcoVib_G3_p.wav measures -5.18 semitones off note 55 - left out
+solo-violin/Sustain: LLVln_ArcoVib_G6_p.wav measures +4.91 semitones off note 91 - left out
+solo-violin/Sustain: 28 samples, notes 55..96, 2 layer(s), 2 left out
+solo-violin/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+solo-violin/Spiccato: 60 samples, notes 55..96, 2 layer(s)
+solo-violin/Pizzicato: LLVln_Pizz_C7_f.wav measures -5.07 semitones off note 96 - left out
+solo-violin/Pizzicato: LLVln_Pizz_E6_f_RR2.wav measures +2.91 semitones off note 88 - left out
+solo-violin/Pizzicato: 42 samples, notes 55..93, 2 layer(s), 2 left out
+solo-violin/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+solo-violin/Tremolo: 27 samples, notes 55..96, 2 layer(s)
+viola-section: 4 articulation(s), 140 zones, 140 files, range 41..93, gain +0.7 dB
+viola-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Sustain: 26 samples, notes 48..86, 2 layer(s)
+viola-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Spiccato: 48 samples, notes 48..86, 2 layer(s)
+viola-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Pizzicato: ViolaEns_pizz_B4_v1_rr1.wav measures -3.78 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_B4_v1_rr2.wav measures +5.03 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_B4_v2_rr2.wav measures +4.91 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_D5_v1_rr2.wav measures +4.77 semitones off note 86 - left out
+viola-section/Pizzicato: 42 samples, notes 48..86, 2 layer(s), 4 left out
+viola-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Tremolo: 24 samples, notes 48..86, 2 layer(s)
+french-horn: 3 articulation(s), 99 zones, 99 files, range 26..84, gain +6.2 dB
+french-horn/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+french-horn/Sustain: MOHorn_sus_G1_v3_1.wav measures -0.65 semitones off note 43 - left out
+french-horn/Sustain: 28 samples, notes 33..77, 4 layer(s), 1 left out
+french-horn/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+french-horn/Staccato: 54 samples, notes 33..77, 3 layer(s)
+french-horn/Muted: file names are +1 octave(s) off the measured pitch - corrected
+french-horn/Muted: 17 samples, notes 46..77, 3 layer(s)
+trumpet: 5 articulation(s), 139 zones, 139 files, range 46..91, gain -3.4 dB
+trumpet/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+trumpet/Sustain: 20 samples, notes 53..84, 2 layer(s)
+trumpet/Vibrato: file names are +1 octave(s) off the measured pitch - corrected
+trumpet/Vibrato: 22 samples, notes 53..84, 2 layer(s)
+trumpet/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+trumpet/Staccato: Sum_SHTrumpet_stac_F2_v3_rr2.wav measures +0.53 semitones off note 53 - left out
+trumpet/Staccato: 65 samples, notes 53..84, 3 layer(s), 1 left out
+trumpet/Straight Mute: file names are +1 octave(s) off the measured pitch - corrected
+trumpet/Straight Mute: 16 samples, notes 58..81, 2 layer(s)
+trumpet/Harmon Mute: file names are +1 octave(s) off the measured pitch - corrected
+trumpet/Harmon Mute: 16 samples, notes 58..81, 2 layer(s)
+cello-section: 4 articulation(s), 151 zones, 151 files, range 29..84, gain -1.8 dB
+cello-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Sustain: 27 samples, notes 36..77, 2 layer(s)
+cello-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Spiccato: 52 samples, notes 36..77, 2 layer(s)
+cello-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Pizzicato: pizzT_D4_v1_RR1.wav measures +4.78 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_D4_v1_RR2.wav measures -3.12 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_D4_v2_RR2.wav measures -4.02 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_E3_v1_RR2.wav measures +2.36 semitones off note 64 - left out
+cello-section/Pizzicato: pizzT_E3_v2_RR2.wav measures +4.95 semitones off note 64 - left out
+cello-section/Pizzicato: 47 samples, notes 36..77, 2 layer(s), 5 left out
+cello-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Tremolo: 25 samples, notes 36..77, 2 layer(s)
+double-bass: 5 articulation(s), 151 zones, 151 files, range 21..66, gain +16.0 dB
+double-bass/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+double-bass/Pizzicato: 40 samples, notes 28..59, 2 layer(s)
+double-bass/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+double-bass/Sustain: 26 samples, notes 30..59, 2 layer(s)
+double-bass/Sustain Straight: file names are +1 octave(s) off the measured pitch - corrected
+double-bass/Sustain Straight: 28 samples, notes 28..59, 2 layer(s)
+double-bass/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+double-bass/Spiccato: 42 samples, notes 28..59, 2 layer(s)
+double-bass/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+double-bass/Tremolo: BKCtbss_Trem_G0_v1_rr1.wav measures +0.83 semitones off note 31 - left out
+double-bass/Tremolo: 15 samples, notes 28..59, 2 layer(s), 1 left out
+piccolo: 2 articulation(s), 10 zones, 10 files, range 72..110, gain +5.2 dB
+piccolo/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+piccolo/Sustain: 5 samples, notes 79..103, 1 layer(s)
+piccolo/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+piccolo/Staccato: 5 samples, notes 82..106, 1 layer(s)
+tuba: 2 articulation(s), 84 zones, 84 files, range 22..69, gain +2.3 dB
+tuba/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+tuba/Sustain: 23 samples, notes 29..62, 3 layer(s)
+tuba/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+tuba/Staccato: Tuba3_stac_A#0_v2_rr3_Sum.wav measures -1.12 semitones off note 34 - left out
+tuba/Staccato: Tuba3_stac_A#1_v1_rr1_Sum.wav measures -0.59 semitones off note 46 - left out
+tuba/Staccato: Tuba3_stac_F1_v1_rr1_Sum.wav measures -0.57 semitones off note 41 - left out
+tuba/Staccato: 61 samples, notes 34..62, 2 layer(s), 3 left out
+trombone: 3 articulation(s), 99 zones, 99 files, range 27..72, gain +16.1 dB
+trombone/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+trombone/Sustain: 31 samples, notes 34..65, 3 layer(s)
+trombone/Vibrato: file names are +1 octave(s) off the measured pitch - corrected
+trombone/Vibrato: 12 samples, notes 41..63, 1 layer(s)
+trombone/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+trombone/Staccato: 56 samples, notes 34..65, 4 layer(s)
+flute: 4 articulation(s), 94 zones, 94 files, range 53..103, gain +2.7 dB
+flute/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+flute/Sustain: 19 samples, notes 60..96, 3 layer(s)
+flute/Vibrato: file names are +1 octave(s) off the measured pitch - corrected
+flute/Vibrato: 13 samples, notes 60..96, 1 layer(s)
+flute/Expressive: file names are +1 octave(s) off the measured pitch - corrected
+flute/Expressive: 14 samples, notes 60..96, 1 layer(s)
+flute/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+flute/Staccato: 48 samples, notes 69..96, 4 layer(s)
+clarinet: 2 articulation(s), 94 zones, 94 files, range 43..93, gain +2.6 dB
+clarinet/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+clarinet/Sustain: DCClar_susLong_F#5_v1_rr1_sum.wav measures -0.99 semitones off note 90 - left out
+clarinet/Sustain: DCClar_susLong_F#5_v2_rr1_sum.wav measures -0.98 semitones off note 90 - left out
+clarinet/Sustain: DCClar_susLong_F#5_v3_rr1_sum.wav measures -1.02 semitones off note 90 - left out
+clarinet/Sustain: 30 samples, notes 50..86, 3 layer(s), 3 left out
+clarinet/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+clarinet/Staccato: 64 samples, notes 50..89, 3 layer(s)
+oboe: 3 articulation(s), 85 zones, 85 files, range 51..96, gain +6.0 dB
+oboe/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+oboe/Sustain: 18 samples, notes 58..89, 2 layer(s)
+oboe/Vibrato: file names are +1 octave(s) off the measured pitch - corrected
+oboe/Vibrato: 18 samples, notes 58..89, 2 layer(s)
+oboe/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+oboe/Staccato: Oboe_Stacc_A#3_v2_rr1_Main.wav measures -4.96 semitones off note 70 - left out
+oboe/Staccato: Oboe_Stacc_A#3_v2_rr2_Main.wav measures -4.95 semitones off note 70 - left out
+oboe/Staccato: 49 samples, notes 58..89, 3 layer(s), 2 left out
+bassoon: 3 articulation(s), 92 zones, 92 files, range 27..82, gain -2.6 dB
+bassoon/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+bassoon/Sustain: 25 samples, notes 34..75, 2 layer(s)
+bassoon/Vibrato: file names are +1 octave(s) off the measured pitch - corrected
+bassoon/Vibrato: 21 samples, notes 43..72, 2 layer(s)
+bassoon/Staccato: file names are +1 octave(s) off the measured pitch - corrected
+bassoon/Staccato: 46 samples, notes 34..72, 2 layer(s)
+kit-jazz: drum kit, 305 zones on GM notes [35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 53, 57, 59], gain +5.6 dB
+string-ensemble: 4 articulation(s), 200 zones, 200 files, range 29..93, gain +2.2 dB
+cello-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Sustain: 27 samples, notes 36..77, 2 layer(s)
+viola-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Sustain: 26 samples, notes 48..86, 2 layer(s)
+violin-section/Sustain: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Sustain: 22 samples, notes 55..86, 2 layer(s)
+string-ensemble/Sustain: 35 zones from the three sections
+cello-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Spiccato: 52 samples, notes 36..77, 2 layer(s)
+viola-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Spiccato: 48 samples, notes 48..86, 2 layer(s)
+violin-section/Spiccato: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Spiccato: VlnEns_Spic_G2_v1_rr2.wav measures -4.91 semitones off note 55 - left out
+violin-section/Spiccato: 43 samples, notes 55..86, 2 layer(s), 1 left out
+string-ensemble/Spiccato: 68 zones from the three sections
+cello-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Pizzicato: pizzT_D4_v1_RR1.wav measures +4.78 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_D4_v1_RR2.wav measures -3.12 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_D4_v2_RR2.wav measures -4.02 semitones off note 74 - left out
+cello-section/Pizzicato: pizzT_E3_v1_RR2.wav measures +2.36 semitones off note 64 - left out
+cello-section/Pizzicato: pizzT_E3_v2_RR2.wav measures +4.95 semitones off note 64 - left out
+cello-section/Pizzicato: 47 samples, notes 36..77, 2 layer(s), 5 left out
+viola-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Pizzicato: ViolaEns_pizz_B4_v1_rr1.wav measures -3.78 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_B4_v1_rr2.wav measures +5.03 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_B4_v2_rr2.wav measures +4.91 semitones off note 83 - left out
+viola-section/Pizzicato: ViolaEns_pizz_D5_v1_rr2.wav measures +4.77 semitones off note 86 - left out
+viola-section/Pizzicato: 42 samples, notes 48..86, 2 layer(s), 4 left out
+violin-section/Pizzicato: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Pizzicato: VlnEns_Pizz_D5_v1_rr1.wav measures +5.01 semitones off note 86 - left out
+violin-section/Pizzicato: VlnEns_Pizz_D5_v1_rr2.wav measures +5.05 semitones off note 86 - left out
+violin-section/Pizzicato: 42 samples, notes 55..86, 2 layer(s), 2 left out
+string-ensemble/Pizzicato: 66 zones from the three sections
+cello-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+cello-section/Tremolo: 25 samples, notes 36..77, 2 layer(s)
+viola-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+viola-section/Tremolo: 24 samples, notes 48..86, 2 layer(s)
+violin-section/Tremolo: file names are +1 octave(s) off the measured pitch - corrected
+violin-section/Tremolo: 21 samples, notes 55..86, 2 layer(s)
+string-ensemble/Tremolo: 31 zones from the three sections
+modeled instruments copied from C:\hem\models
