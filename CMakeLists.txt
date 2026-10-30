@@ -133,6 +133,7 @@ if(HF_BUILD_TESTS)
         Tests/SessionTests.cpp
         Tests/BandTests.cpp
         Tests/ExportTests.cpp
+        Tests/LoudnessTests.cpp
         Tests/ModelTests.cpp)
     target_include_directories(ForgeTests PRIVATE Source Tests)
     target_compile_definitions(ForgeTests PRIVATE ${HF_COMMON_DEFS} JUCE_UNIT_TESTS=1)

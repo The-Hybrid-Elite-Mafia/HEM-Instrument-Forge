@@ -23,10 +23,10 @@ public:
     void prepare (double sampleRate)
     {
         fs = sampleRate;
-        // K-weighting stage 1 (high shelf, +4 dB) and stage 2 (high pass), as in BS.1770 for 48 kHz,
-        // re-derived for any rate with the same analog prototypes.
-        preFilter = BiquadCoeffs::highShelfQ (fs, 1681.97, 3.99984, 0.7071752);
-        rlbFilter = BiquadCoeffs::highPass (fs, 38.1355, 0.5003270);
+        // K-weighting stage 1 (high shelf, +4 dB) and stage 2 (RLB high pass), BS.1770 coefficients
+        // at 48 kHz, re-derived for any rate from the same analog prototypes.
+        preFilter = kWeightingStage1 (fs);
+        rlbFilter = kWeightingStage2 (fs);
         hop = std::max (1, (int) std::lround (fs * 0.1));
         hops.assign (30, 0.0);   // 30 x 100 ms = 3 s
         reset();
@@ -56,6 +56,40 @@ public:
     float getMomentary() const noexcept  { return momentary.load (std::memory_order_relaxed); }
     float getShortTerm() const noexcept  { return shortTerm.load (std::memory_order_relaxed); }
     float getIntegrated() const noexcept { return integrated.load (std::memory_order_relaxed); }
+
+    /** K-weighting stage 1 (pre-filter high shelf) for this sample rate. Uses the analog prototype
+        behind the ITU-R BS.1770 table (the same design as libebur128 / pyloudnorm), so at 48 kHz it
+        gives the published coefficients exactly. (An RBJ cookbook shelf with the same f0/gain/Q does
+        NOT: it gives +0.44 dB at 1 kHz instead of +0.69 dB, so every reading was ~0.25 LU low.) */
+    static BiquadCoeffs kWeightingStage1 (double sampleRate) noexcept
+    {
+        const double f0 = 1681.974450955533, gainDb = 3.999843853973347, q = 0.7071752369554196;
+        const double K = std::tan (std::numbers::pi * f0 / sampleRate);
+        const double Vh = std::pow (10.0, gainDb / 20.0);
+        const double Vb = std::pow (Vh, 0.4996667741545416);
+        const double a0 = 1.0 + K / q + K * K;
+        BiquadCoeffs c;
+        c.b0 = (Vh + Vb * K / q + K * K) / a0;
+        c.b1 = 2.0 * (K * K - Vh) / a0;
+        c.b2 = (Vh - Vb * K / q + K * K) / a0;
+        c.a1 = 2.0 * (K * K - 1.0) / a0;
+        c.a2 = (1.0 - K / q + K * K) / a0;
+        return c;
+    }
+
+    /** K-weighting stage 2 (RLB high pass) for this sample rate: numerator exactly 1, -2, 1 as in
+        BS.1770 (an RBJ high pass scales the numerator by (1 + cos w0) / 2 instead). */
+    static BiquadCoeffs kWeightingStage2 (double sampleRate) noexcept
+    {
+        const double f0 = 38.13547087602444, q = 0.5003270373238773;
+        const double K = std::tan (std::numbers::pi * f0 / sampleRate);
+        const double a0 = 1.0 + K / q + K * K;
+        BiquadCoeffs c;
+        c.b0 = 1.0; c.b1 = -2.0; c.b2 = 1.0;
+        c.a1 = 2.0 * (K * K - 1.0) / a0;
+        c.a2 = (1.0 - K / q + K * K) / a0;
+        return c;
+    }
 
     static float powerToLufs (double meanSquare) noexcept
     {
