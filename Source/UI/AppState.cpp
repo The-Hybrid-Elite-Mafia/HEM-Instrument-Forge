@@ -192,14 +192,23 @@ bool AppState::isMySound (const juce::String& id) const
     return e != nullptr && e->mine;
 }
 
-void AppState::importMySounds (const juce::Array<juce::File>& files, const juce::String& name, bool drumKit, int forcedNote,
-                               std::function<void (bool, const juce::String&, const juce::String&)> done)
+void AppState::importMySounds (const juce::Array<juce::File>& files, const juce::String& name, usersounds::Mode mode, const usersounds::SliceOptions& options,
+                               int forcedNote, std::function<void (bool, const juce::String&, const juce::String&)> done)
 {
     auto flag = alive;
-    loader.addJob ([this, files, name, drumKit, forcedNote, done, flag]
+    loader.addJob ([this, files, name, mode, options, forcedNote, done, flag]
     {
         const auto mine = usersounds::defaultFolder();
-        auto r = drumKit ? usersounds::importKit (files, name, mine) : usersounds::importPitched (files, name, forcedNote, mine);
+        usersounds::Result r;
+        switch (mode)
+        {
+            case usersounds::Mode::notes:    r = usersounds::importPitched (files, name, forcedNote, mine); break;
+            case usersounds::Mode::drumKit:  r = usersounds::importKit (files, name, mine); break;
+            default:
+                if (files.size() != 1) { r.error = "Cutting works on one file at a time."; break; }
+                r = usersounds::importSliced (files[0], name, mode, options, mine);
+                break;
+        }
         juce::MessageManager::callAsync ([this, r, done, flag]
         {
             if (! flag->load()) return;

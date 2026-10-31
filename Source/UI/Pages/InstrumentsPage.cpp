@@ -319,29 +319,57 @@ void InstrumentsPage::addMySounds()
 
 void InstrumentsPage::askNameAndImport (juce::Array<juce::File> files)
 {
-    auto* w = new juce::AlertWindow ("Add your sounds", juce::String (files.size()) + " file(s) chosen. A guitar, bass or synth recording is "
-                                     "played as a note. A drum kit is played as hits, one key per file.", juce::MessageBoxIconType::NoIcon);
+    auto* w = new juce::AlertWindow ("Add your sounds", juce::String (files.size()) + " file(s) chosen. Pick what they are. For one long file "
+                                     "(a whole song stem), pick one of the CUT choices and the Forge finds the hits, notes or bars for you.", juce::MessageBoxIconType::NoIcon);
     w->addTextEditor ("name", files[0].getFileNameWithoutExtension(), "Name of the instrument");
-    w->addComboBox ("kind", { "Notes (guitar, bass, synth: one pitch per file)", "Drum kit (hits: one drum per file)" }, "What is it?");
+    w->addComboBox ("kind", { "Notes (guitar, bass, synth: one pitch per file)", "Drum kit (hits: one drum per file)",
+                              "CUT a long file: drum hits (kick, snare, hat)", "CUT a long file: single notes", "CUT a long file: loops (whole bars)" }, "What is it?");
     w->addTextEditor ("note", {}, "Note, only if the pitch can't be found (like E2)");
+    w->addTextEditor ("bpm", {}, "For loops: BPM (leave empty to find it)");
+    w->addComboBox ("bars", { "1 bar per loop", "2 bars per loop", "4 bars per loop" }, "For loops: length");
+    styleDarkCombo (*w->getComboBoxComponent ("kind"));
+    styleDarkCombo (*w->getComboBoxComponent ("bars"));
     w->addButton ("ADD", 1, juce::KeyPress (juce::KeyPress::returnKey));
     w->addButton ("CANCEL", 0, juce::KeyPress (juce::KeyPress::escapeKey));
     juce::Component::SafePointer<InstrumentsPage> safe (this);
     w->enterModalState (true, juce::ModalCallbackFunction::create ([safe, w, files] (int result)
     {
         const auto name = w->getTextEditorContents ("name").trim();
-        const bool kit = w->getComboBoxComponent ("kind")->getSelectedItemIndex() == 1;
+        const int kindIndex = w->getComboBoxComponent ("kind")->getSelectedItemIndex();
+        const int barsIndex = w->getComboBoxComponent ("bars")->getSelectedItemIndex();
         const auto noteText = w->getTextEditorContents ("note").trim();
+        const auto bpmText = w->getTextEditorContents ("bpm").trim();
         if (safe == nullptr || result != 1) return;
+        const usersounds::Mode modes[] = { usersounds::Mode::notes, usersounds::Mode::drumKit, usersounds::Mode::sliceHits,
+                                           usersounds::Mode::sliceNotes, usersounds::Mode::sliceLoops };
+        const auto mode = modes[juce::jlimit (0, 4, kindIndex)];
+        const bool cutting = kindIndex >= 2;
+        if (cutting && files.size() != 1)
+        {
+            juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Add your sounds", "Cutting works on one file at a time. Choose just the one long file.");
+            return;
+        }
         const int forced = noteText.isEmpty() ? -1 : usersounds::parseNoteName (noteText);
         if (noteText.isNotEmpty() && forced < 0)
         {
             juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Add your sounds", "\"" + noteText + "\" is not a note. Use something like E2, C#3 or 52.");
             return;
         }
+        usersounds::SliceOptions opt;
+        opt.bars = barsIndex == 1 ? 2 : barsIndex == 2 ? 4 : 1;
+        if (mode == usersounds::Mode::sliceLoops && bpmText.isNotEmpty())
+        {
+            opt.bpm = bpmText.getDoubleValue();
+            if (opt.bpm < 40.0 || opt.bpm > 220.0)
+            {
+                juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Add your sounds", "The BPM must be a number between 40 and 220, or empty to let the Forge find it.");
+                return;
+            }
+        }
         auto& st = safe->state;
-        if (st.status) st.status ("Adding " + name + "...");
-        st.importMySounds (files, name, kit, kit ? -1 : forced, [safe, name] (bool ok, const juce::String& idOrError, const juce::String& report)
+        if (st.status) st.status ((cutting ? "Cutting " : "Adding ") + name + "...");
+        st.importMySounds (files, name, mode, opt, mode == usersounds::Mode::notes || mode == usersounds::Mode::sliceNotes ? forced : -1,
+                           [safe, name] (bool ok, const juce::String& idOrError, const juce::String& report)
         {
             if (safe == nullptr) return;
             if (ok)

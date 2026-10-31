@@ -54,6 +54,7 @@ bool readZone (const juce::var& v, Zone& z, juce::String& error)
     if (auto* x = v["xout"].getArray(); x != nullptr && x->size() == 2) { z.xoutLo = (int) (*x)[0]; z.xoutHi = (int) (*x)[1]; }
     z.pedal = v.hasProperty ("pedal") ? (int) v["pedal"] : -1;
     z.release = v.hasProperty ("release") ? (float) (double) v["release"] : -1.0f;
+    z.oneShot = (bool) v.getProperty ("oneshot", false);
     if (z.frames <= 0 || z.root < -24 || z.root > 151 || z.lo < 0 || z.hi > 127 || z.lo > z.hi
         || z.vlo < 0 || z.vhi > 127 || z.vlo > z.vhi || z.rr > z.rrCount)
     {

@@ -204,6 +204,7 @@ void VoicePool::noteOff (int track, juce::uint32 noteId, int offset, TrackPlaySt
     for (auto& v : voices)
     {
         if (! v.on || v.track != track || v.noteId != noteId || v.releasing || v.releaseDelay >= 0 || v.isReleaseSample) continue;
+        if (v.zone != nullptr && v.zone->def != nullptr && v.zone->def->oneShot) continue;   // plays through
         if (ts.pedal) { v.pedalHeld = true; continue; }
         v.releaseDelay = juce::jmax (0, offset);
         if (! releaseTriggered) { triggerReleaseZones (v, ts); releaseTriggered = true; }

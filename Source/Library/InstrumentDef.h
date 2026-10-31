@@ -28,6 +28,7 @@ struct Zone
     int xoutLo = -1, xoutHi = -1; // velocity fade-out range
     int pedal = -1;               // -1 any, 0 only with the sustain pedal up, 1 only with it down
     float release = -1.0f;        // seconds; -1 = the articulation's release
+    bool oneShot = false;         // plays through to its end, key-up does not stop it (drum hits, loops)
 
     bool hasLoop() const noexcept { return loopStart >= 0 && loopEnd > loopStart + 64; }
     /** Gain (0..1) from the velocity cross-fade ranges for velocity 0..127. */

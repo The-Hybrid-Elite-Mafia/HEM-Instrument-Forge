@@ -2,6 +2,7 @@
 
 #include "Engine/ForgeEngine.h"
 #include "Library/Library.h"
+#include "Library/UserSounds.h"
 #include "Sampler/LoadedInstrument.h"
 #include "Session/Song.h"
 #include <juce_audio_devices/juce_audio_devices.h>
@@ -48,7 +49,7 @@ public:
     // ---- My Sounds (the user's own WAV recordings as instruments) ----------------------
     /** Reads the files, builds the instrument on a worker thread, then lists it. `done(ok, text)` runs on the
         message thread: `text` is the instrument id on success, else the reason. */
-    void importMySounds (const juce::Array<juce::File>& files, const juce::String& name, bool drumKit, int forcedNote,
+    void importMySounds (const juce::Array<juce::File>& files, const juce::String& name, usersounds::Mode mode, const usersounds::SliceOptions& options, int forcedNote,
                          std::function<void (bool, const juce::String&, const juce::String&)> done);
     /** Deletes one of the user's own instruments. False + reason if a track still uses it or it is not theirs. */
     bool removeMySound (const juce::String& id, juce::String& reason);
