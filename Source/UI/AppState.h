@@ -44,6 +44,15 @@ public:
     bool openLibrary();
     bool openLibraryAt (const juce::File&);
     const Library& getLibrary() const noexcept { return library; }
+
+    // ---- My Sounds (the user's own WAV recordings as instruments) ----------------------
+    /** Reads the files, builds the instrument on a worker thread, then lists it. `done(ok, text)` runs on the
+        message thread: `text` is the instrument id on success, else the reason. */
+    void importMySounds (const juce::Array<juce::File>& files, const juce::String& name, bool drumKit, int forcedNote,
+                         std::function<void (bool, const juce::String&, const juce::String&)> done);
+    /** Deletes one of the user's own instruments. False + reason if a track still uses it or it is not theirs. */
+    bool removeMySound (const juce::String& id, juce::String& reason);
+    bool isMySound (const juce::String& id) const;
     juce::String getLibraryError() const { return libraryError; }
 
     // ---- song ------------------------------------------------------------------------
@@ -111,6 +120,7 @@ public:
 private:
     class SongAction;
     class BalanceJob;
+    void reloadLibrary();
     void startBalance();
     void balanceFinished (std::vector<float> levels);
     void timerCallback() override;

@@ -2,11 +2,11 @@
 
 namespace hf
 {
-bool Library::open (const juce::File& f, juce::String& error)
+namespace
 {
-    entries.clear();
-    families.clear();
-    folder = f;
+/** Reads <root>/index.json. `absolute` makes each entry's folder a full path (for My Sounds, which lives elsewhere). */
+bool readIndex (const juce::File& f, bool absolute, std::vector<LibraryEntry>& entries, juce::StringArray& families, juce::String& error)
+{
     const auto json = juce::JSON::parse (f.getChildFile ("index.json"));
     if (! json.isObject() || json["format"].toString() != "hem-instrument-library")
     {
@@ -14,7 +14,7 @@ bool Library::open (const juce::File& f, juce::String& error)
         return false;
     }
     if (auto* fams = json["families"].getArray())
-        for (auto& v : *fams) families.add (v.toString());
+        for (auto& v : *fams) families.addIfNotAlreadyThere (v.toString());
     if (auto* items = json["instruments"].getArray())
         for (auto& v : *items)
         {
@@ -31,11 +31,23 @@ bool Library::open (const juce::File& f, juce::String& error)
                 for (auto& n : *a) e.articulations.add (n.toString());
             e.zones = (int) v["zones"];
             e.bytes = (juce::int64) v["bytes"];
-            if (e.id.isEmpty() || e.folder.isEmpty() || e.folder.contains ("..")) continue;
+            if (e.id.isEmpty() || e.folder.isEmpty() || e.folder.contains ("..") || juce::File::isAbsolutePath (e.folder)) continue;
             if (! f.getChildFile (e.folder).getChildFile ("instrument.json").existsAsFile()) continue;   // family not installed
+            if (absolute) e.folder = f.getChildFile (e.folder).getFullPathName();
+            e.mine = absolute;
             if (! families.contains (e.family)) families.add (e.family);
             entries.push_back (std::move (e));
         }
+    return true;
+}
+} // namespace
+
+bool Library::open (const juce::File& f, juce::String& error)
+{
+    entries.clear();
+    families.clear();
+    folder = f;
+    if (! readIndex (f, false, entries, families, error)) return false;
     if (entries.empty())
     {
         error = "The library in " + f.getFullPathName() + " lists no installed instruments";
@@ -48,6 +60,24 @@ bool Library::open (const juce::File& f, juce::String& error)
             if (e.family == fam) { used.add (fam); break; }
     families = used;
     return true;
+}
+
+int Library::addFolder (const juce::File& mine)
+{
+    if (! mine.getChildFile ("index.json").existsAsFile()) return 0;
+    std::vector<LibraryEntry> extra;
+    juce::StringArray fams;
+    juce::String err;
+    if (! readIndex (mine, true, extra, fams, err)) return 0;
+    int added = 0;
+    for (auto& e : extra)
+    {
+        if (find (e.id) != nullptr) continue;   // never hide or replace a library instrument
+        if (! families.contains (e.family)) families.add (e.family);
+        entries.push_back (std::move (e));
+        ++added;
+    }
+    return added;
 }
 
 const LibraryEntry* Library::find (const juce::String& id) const

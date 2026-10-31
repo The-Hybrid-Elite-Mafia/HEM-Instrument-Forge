@@ -12,6 +12,7 @@ struct LibraryEntry
     juce::StringArray articulations;
     int zones = 0;
     juce::int64 bytes = 0;
+    bool mine = false;            // one of the user's own sounds (My Sounds)
 };
 
 /**
@@ -23,6 +24,9 @@ class Library
 public:
     /** Reads index.json. False + error if the folder is not a library. */
     bool open (const juce::File& folder, juce::String& error);
+    /** Adds the instruments of a second folder with its own index.json (My Sounds). Ids already in the
+        library are skipped. Returns how many were added. Call after open(). */
+    int addFolder (const juce::File&);
     bool isOpen() const noexcept { return ! entries.empty(); }
     juce::File getFolder() const { return folder; }
 

@@ -28,6 +28,7 @@ set(HF_CORE_SOURCES
     Source/Core/SincResampler.cpp
     Source/Library/InstrumentDef.cpp
     Source/Library/Library.cpp
+    Source/Library/UserSounds.cpp
     Source/Sampler/LoadedInstrument.cpp
     Source/Sampler/DiskStreamer.cpp
     Source/Sampler/VoicePool.cpp
@@ -127,6 +128,7 @@ if(HF_BUILD_TESTS)
         Tests/TestMain.cpp
         Tests/TestLibrary.cpp
         Tests/LibraryTests.cpp
+        Tests/UserSoundsTests.cpp
         Tests/SamplerTests.cpp
         Tests/StageTests.cpp
         Tests/EngineTests.cpp

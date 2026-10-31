@@ -1,4 +1,5 @@
 #include "UI/AppState.h"
+#include "Library/UserSounds.h"
 #include "Engine/Exporter.h"
 #include "Band/BandBridge.h"
 
@@ -160,6 +161,7 @@ bool AppState::openLibrary()
         juce::String err;
         if (f != juce::File() && f.isDirectory() && library.open (f, err))
         {
+            library.addFolder (usersounds::defaultFolder());
             failed.clear();
             listeners.call ([] (Listener& l) { l.libraryChanged(); });
             ensureInstruments();
@@ -173,12 +175,58 @@ bool AppState::openLibrary()
     return false;
 }
 
+void AppState::reloadLibrary()
+{
+    Library fresh;
+    juce::String err;
+    if (! fresh.open (library.getFolder(), err)) return;
+    fresh.addFolder (usersounds::defaultFolder());
+    library = std::move (fresh);
+    failed.clear();
+    listeners.call ([] (Listener& l) { l.libraryChanged(); });
+}
+
+bool AppState::isMySound (const juce::String& id) const
+{
+    const auto* e = library.find (id);
+    return e != nullptr && e->mine;
+}
+
+void AppState::importMySounds (const juce::Array<juce::File>& files, const juce::String& name, bool drumKit, int forcedNote,
+                               std::function<void (bool, const juce::String&, const juce::String&)> done)
+{
+    auto flag = alive;
+    loader.addJob ([this, files, name, drumKit, forcedNote, done, flag]
+    {
+        const auto mine = usersounds::defaultFolder();
+        auto r = drumKit ? usersounds::importKit (files, name, mine) : usersounds::importPitched (files, name, forcedNote, mine);
+        juce::MessageManager::callAsync ([this, r, done, flag]
+        {
+            if (! flag->load()) return;
+            if (r.ok) reloadLibrary();
+            if (done) done (r.ok, r.ok ? r.id : r.error, r.report);
+        });
+    });
+}
+
+bool AppState::removeMySound (const juce::String& id, juce::String& reason)
+{
+    if (! isMySound (id)) { reason = "That is not one of your own sounds."; return false; }
+    for (auto& t : song.tracks)
+        if (t.instrumentId == id) { reason = "A track in this song still uses it. Put another instrument on that track first."; return false; }
+    cache.erase (id);
+    if (! usersounds::remove (id, usersounds::defaultFolder())) { reason = "Could not delete its files."; return false; }
+    reloadLibrary();
+    return true;
+}
+
 bool AppState::openLibraryAt (const juce::File& folder)
 {
     Library fresh;
     juce::String err;
     if (! fresh.open (folder, err)) { libraryError = err; return false; }
     settings.setValue ("libraryFolder", folder.getFullPathName());
+    fresh.addFolder (usersounds::defaultFolder());
     library = std::move (fresh);
     libraryError = {};
     failed.clear();

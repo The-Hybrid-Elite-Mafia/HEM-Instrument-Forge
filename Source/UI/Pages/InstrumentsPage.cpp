@@ -1,5 +1,6 @@
 #include "UI/Pages/InstrumentsPage.h"
 #include "UI/Pages/TracksPage.h"
+#include "Library/UserSounds.h"
 
 namespace hf::ui
 {
@@ -13,6 +14,10 @@ InstrumentsPage::Side::Side (InstrumentsPage& p) : page (p)
     search.setTextToShowWhenEmpty ("Search...", colours::paperDim);
     search.onTextChange = [this] { refresh(); };
     addAndMakeVisible (search);
+    for (auto* b : { &addMine, &removeMine }) { styleDarkButton (*b); addAndMakeVisible (*b); }
+    addMine.getProperties().set (props::accent, (juce::int64) colours::hemGreen.getARGB());
+    addMine.onClick = [this] { page.addMySounds(); };
+    removeMine.onClick = [this] { page.removeSelectedMine(); };
     list.setModel (this);
     list.setColour (juce::ListBox::backgroundColourId, juce::Colour (0xff15181d));
     list.setOutlineThickness (0);
@@ -23,7 +28,9 @@ void InstrumentsPage::Side::refresh()
 {
     const auto& lib = page.state.getLibrary();
     const auto fam = family.getText();
-    if (family.getNumItems() != lib.getFamilies().size() + 1)
+    bool sameFamilies = family.getNumItems() == lib.getFamilies().size() + 1;
+    for (int i = 0; sameFamilies && i < lib.getFamilies().size(); ++i) sameFamilies = family.getItemText (i + 1) == lib.getFamilies()[i];
+    if (! sameFamilies)
     {
         family.clear (juce::dontSendNotification);
         family.addItem ("All families", 1);
@@ -41,6 +48,7 @@ void InstrumentsPage::Side::refresh()
     }
     list.updateContent();
     list.repaint();
+    removeMine.setEnabled (list.getSelectedRow() >= 0 && list.getSelectedRow() < rows.size() && page.state.isMySound (rows[list.getSelectedRow()]));
     juce::ignoreUnused (fam);
 }
 
@@ -55,12 +63,13 @@ void InstrumentsPage::Side::paintListBoxItem (int row, juce::Graphics& g, int w,
     g.drawText (e->name, 8, 0, w - 16, h * 6 / 10, juce::Justification::bottomLeft, true);
     g.setColour (colours::paperDim);
     g.setFont (ForgeLookAndFeel::font (11.0f * u, false));
-    g.drawText (e->family + (e->source == "hem" ? "  -  modeled" : "  -  recorded"), 8, h * 6 / 10, w - 16, h * 4 / 10, juce::Justification::topLeft, true);
+    g.drawText (e->family + (e->mine ? "  -  your own recording" : e->source == "hem" ? "  -  modeled" : "  -  recorded"), 8, h * 6 / 10, w - 16, h * 4 / 10, juce::Justification::topLeft, true);
 }
 
 void InstrumentsPage::Side::selectedRowsChanged (int row)
 {
     if (row >= 0 && row < rows.size()) page.showInstrument (rows[row]);
+    removeMine.setEnabled (row >= 0 && row < rows.size() && page.state.isMySound (rows[row]));
 }
 
 void InstrumentsPage::Side::listBoxItemDoubleClicked (int row, const juce::MouseEvent&)
@@ -86,6 +95,11 @@ void InstrumentsPage::Side::resized()
     search.setFont (ForgeLookAndFeel::font (14.0f * u, false));
     b.removeFromTop (juce::roundToInt (6.0f * u));
     list.setRowHeight (juce::roundToInt (40.0f * u));
+    auto bottom = b.removeFromBottom (juce::roundToInt (34.0f * u));
+    b.removeFromBottom (juce::roundToInt (6.0f * u));
+    removeMine.setBounds (bottom.removeFromRight (juce::roundToInt (90.0f * u)));
+    bottom.removeFromRight (juce::roundToInt (6.0f * u));
+    addMine.setBounds (bottom);
     list.setBounds (b);
 }
 
@@ -285,5 +299,78 @@ void InstrumentsPage::paint (juce::Graphics& g)
               ? state.instrumentName (song.tracks[(size_t) t].instrumentId) : state.loadingText().isNotEmpty() ? state.loadingText() : juce::String ("no instrument")) + ")   -   the keyboard plays this track"
         : juce::String ("No track yet: ADD AS A NEW TRACK, then play the keyboard (mouse, or keys A W S E D F T G Y H U J K)");
     heading (g, trackText, line.toFloat(), 15.0f * u);
+}
+} // namespace hf::ui
+
+//==============================================================================
+namespace hf::ui
+{
+void InstrumentsPage::addMySounds()
+{
+    chooser = std::make_shared<juce::FileChooser> ("Choose your WAV files (drum hits, guitar notes...)",
+                                                   juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.aif;*.aiff;*.flac");
+    juce::Component::SafePointer<InstrumentsPage> safe (this);
+    chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::canSelectMultipleItems,
+                          [safe] (const juce::FileChooser& fc)
+                          {
+                              if (safe != nullptr && fc.getResults().size() > 0) safe->askNameAndImport (fc.getResults());
+                          });
+}
+
+void InstrumentsPage::askNameAndImport (juce::Array<juce::File> files)
+{
+    auto* w = new juce::AlertWindow ("Add your sounds", juce::String (files.size()) + " file(s) chosen. A guitar, bass or synth recording is "
+                                     "played as a note. A drum kit is played as hits, one key per file.", juce::MessageBoxIconType::NoIcon);
+    w->addTextEditor ("name", files[0].getFileNameWithoutExtension(), "Name of the instrument");
+    w->addComboBox ("kind", { "Notes (guitar, bass, synth: one pitch per file)", "Drum kit (hits: one drum per file)" }, "What is it?");
+    w->addTextEditor ("note", {}, "Note, only if the pitch can't be found (like E2)");
+    w->addButton ("ADD", 1, juce::KeyPress (juce::KeyPress::returnKey));
+    w->addButton ("CANCEL", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+    juce::Component::SafePointer<InstrumentsPage> safe (this);
+    w->enterModalState (true, juce::ModalCallbackFunction::create ([safe, w, files] (int result)
+    {
+        const auto name = w->getTextEditorContents ("name").trim();
+        const bool kit = w->getComboBoxComponent ("kind")->getSelectedItemIndex() == 1;
+        const auto noteText = w->getTextEditorContents ("note").trim();
+        if (safe == nullptr || result != 1) return;
+        const int forced = noteText.isEmpty() ? -1 : usersounds::parseNoteName (noteText);
+        if (noteText.isNotEmpty() && forced < 0)
+        {
+            juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Add your sounds", "\"" + noteText + "\" is not a note. Use something like E2, C#3 or 52.");
+            return;
+        }
+        auto& st = safe->state;
+        if (st.status) st.status ("Adding " + name + "...");
+        st.importMySounds (files, name, kit, kit ? -1 : forced, [safe, name] (bool ok, const juce::String& idOrError, const juce::String& report)
+        {
+            if (safe == nullptr) return;
+            if (ok)
+            {
+                if (safe->state.status) safe->state.status (name + " is in your instrument list (My Sounds).");
+                safe->side.refresh();
+                safe->showInstrument (idOrError);
+                juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::InfoIcon, "Added: " + name, report);
+            }
+            else
+                juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Could not add " + name, idOrError);
+        });
+    }), true);
+}
+
+void InstrumentsPage::removeSelectedMine()
+{
+    const auto id = shownId;
+    if (! state.isMySound (id)) return;
+    juce::Component::SafePointer<InstrumentsPage> safe (this);
+    juce::AlertWindow::showAsync (juce::MessageBoxOptions().withIconType (juce::MessageBoxIconType::QuestionIcon).withTitle ("Remove " + state.instrumentName (id) + "?")
+                                      .withMessage ("This deletes the copy of your sound inside the Forge. Your original WAV files are not touched.")
+                                      .withButton ("REMOVE").withButton ("KEEP"),
+                                  [safe, id] (int result)
+                                  {
+                                      if (safe == nullptr || result != 1) return;
+                                      juce::String why;
+                                      if (! safe->state.removeMySound (id, why)) juce::AlertWindow::showMessageBoxAsync (juce::MessageBoxIconType::WarningIcon, "Not removed", why);
+                                      else safe->side.refresh();
+                                  });
 }
 } // namespace hf::ui

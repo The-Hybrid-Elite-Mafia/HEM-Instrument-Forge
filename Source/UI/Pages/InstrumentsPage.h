@@ -40,6 +40,7 @@ private:
         juce::ComboBox family;
         juce::TextEditor search;
         juce::ListBox list;
+        juce::TextButton addMine { "ADD MY WAV FILES" }, removeMine { "REMOVE" };
         juce::StringArray rows;   // instrument ids
     };
 
@@ -52,6 +53,9 @@ private:
     void handleNoteOff (juce::MidiKeyboardState*, int, int note, float) override;
     void bindTrack();
     void putOnTrack (bool asNewTrack);
+    void addMySounds();
+    void askNameAndImport (juce::Array<juce::File> files);
+    void removeSelectedMine();
 
     AppState& state;
     Side side { *this };
@@ -62,6 +66,7 @@ private:
     juce::ComboBox articulation;
     ParamKnob human, velFeel, release, transpose;
     ParamToggle mono, legato;
+    std::shared_ptr<juce::FileChooser> chooser;
     int boundTrack = -1;
     int keyOctave = 4;
     juce::String boundInstrument;
